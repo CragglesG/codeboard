@@ -1,5 +1,4 @@
 // src/components/Header.jsx
-import { PropTypes } from "prop-types";
 import { useLenis } from "./LenisInstance";
 import "./Header.css";
 
@@ -21,13 +20,7 @@ function Header() {
       <div className="logo">Codeboard</div>
       <nav className="nav">
         <a href="#features" onClick={(e) => handleScroll(e, "#features")}>
-          Features
-        </a>
-        <a href="#about" onClick={(e) => handleScroll(e, "#about")}>
-          About
-        </a>
-        <a href="#contact" onClick={(e) => handleScroll(e, "#contact")}>
-          Contact
+          Log In
         </a>
       </nav>
     </header>

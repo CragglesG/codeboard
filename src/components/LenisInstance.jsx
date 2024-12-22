@@ -1,5 +1,6 @@
-import { createContext, useContext, useEffect, useState } from "react";
 import Lenis from "lenis";
+import { createContext, useContext, useEffect, useState } from "react";
+import PropTypes from "prop-types";
 
 const LenisContext = createContext(null);
 
@@ -32,6 +33,10 @@ export function LenisProvider({ children }) {
     <LenisContext.Provider value={lenis}>{children}</LenisContext.Provider>
   );
 }
+
+LenisProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 export function useLenis() {
   const lenis = useContext(LenisContext);
