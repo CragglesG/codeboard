@@ -43,12 +43,40 @@
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
         "Liberation Mono", "Courier New", monospace;
 
+    --basePageBg: #242424;
     color: var(--baseText);
+
     @media (prefers-color-scheme: light) {
         color: var(--baseTextContrast);
-        --basePageBg: #f9f9f9;
     }
-    @media (prefers-color-scheme: dark) {
-        --basePageBg: #242424;
-    }
+
+    position: absolute;
+    margin-left: 0px;
+    padding-left: 0px;
+
+    top: 11%;
+}
+
+.mdxeditor-diff-source-wrapper {
+    z-index: 1;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.mdxeditor {
+    width: 100%;
+}
+
+.header {
+    position: fixed;
+    z-index: 3;
+    left: 0;
+    right: 0;
+    align-content: center;
+}
+
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
 }

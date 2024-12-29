@@ -1,27 +1,23 @@
 // src/components/Header.jsx
-import { useLenis } from "./LenisInstance";
 import "./Header.css";
+import PropTypes from "prop-types";
 
-function Header() {
-  const lenis = useLenis();
-
-  const handleScroll = (e, target) => {
-    e.preventDefault();
-    if (lenis) {
-      lenis.scrollTo(target, {
-        duration: 2,
-        offset: 100,
-      });
-    }
+function Header({ extraItem }) {
+  Header.propTypes = {
+    extraItem: PropTypes.oneOfType([
+      PropTypes.element,
+      PropTypes.arrayOf(PropTypes.element),
+    ]),
   };
 
   return (
     <header className="header">
-      <div className="logo">Codeboard</div>
+      <a className="logo" href="/">
+        Codeboard
+      </a>
+      {extraItem}
       <nav className="nav">
-        <a href="#features" onClick={(e) => handleScroll(e, "#features")}>
-          Log In
-        </a>
+        <a href="/signin">Sign In</a>
       </nav>
     </header>
   );

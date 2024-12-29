@@ -5,15 +5,33 @@
     align-items: center;
     background-color: #282c34;
     color: white;
+    top: 0px;
+    min-width: 100%;
 }
 
 .logo {
     font-size: 1.5rem;
     font-weight: bold;
+    color: white;
+    text-decoration: none;
+    padding: 1.5em;
+    will-change: filter;
+    transition: filter 300ms;
+}
+
+.logo:hover {
+    color: white;
+    text-decoration: none;
+    filter: drop-shadow(0 0 2em #646cffaa);
+}
+
+.logo.react:hover {
+    filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
 .nav a {
-    margin: 0 10px;
+    margin: 0 2rem;
+    font-size: 1.2rem;
     color: white;
     text-decoration: none;
 }

@@ -1,5 +1,3 @@
-// src/components/FeaturesSection.jsx
-import React from "react";
 import "./FeaturesSection.css";
 
 function FeaturesSection() {

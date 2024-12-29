@@ -1,27 +1,28 @@
 import {
-  MDXEditor,
-  headingsPlugin,
-  quotePlugin,
-  listsPlugin,
-  thematicBreakPlugin,
-  toolbarPlugin,
-  linkPlugin,
-  linkDialogPlugin,
-  imagePlugin,
-  tablePlugin,
-  codeMirrorPlugin,
-  codeBlockPlugin,
-  markdownShortcutPlugin,
-  directivesPlugin,
-  diffSourcePlugin,
-  frontmatterPlugin,
-  sandpackPlugin,
   AdmonitionDirectiveDescriptor,
   KitchenSinkToolbar,
+  MDXEditor,
+  codeBlockPlugin,
+  codeMirrorPlugin,
+  diffSourcePlugin,
+  directivesPlugin,
+  frontmatterPlugin,
+  headingsPlugin,
+  imagePlugin,
+  linkDialogPlugin,
+  linkPlugin,
+  listsPlugin,
+  markdownShortcutPlugin,
+  quotePlugin,
+  sandpackPlugin,
+  tablePlugin,
+  thematicBreakPlugin,
+  toolbarPlugin,
 } from "@mdxeditor/editor";
 import "@mdxeditor/editor/style.css";
-import "./Scribbles.css";
 import Header from "./Header";
+import { LenisProvider } from "./LenisInstance";
+import "./Scribbles.css";
 
 const defaultSnippet = `
   export default function App() {
@@ -76,10 +77,20 @@ const simpleSandpackConfig = {
   ],
 };
 
-function Scribbles() {
+export function meta() {
+  return [
+    { title: "Scribbles - Codeboard" },
+    {
+      name: "description",
+      content: "Codeboard Scribbles",
+    },
+  ];
+}
+
+/* separate toolbar and editor */
+export default function Scribbles() {
   return (
-    <>
-      <Header />
+    <LenisProvider>
       <MDXEditor
         className="dark-editor"
         markdown=""
@@ -112,14 +123,12 @@ function Scribbles() {
             toolbarClassName: "toolbar",
             toolbarContents: () => (
               <>
-                <KitchenSinkToolbar />
+                <Header className="header" extraItem={<KitchenSinkToolbar />} />
               </>
             ),
           }),
         ]}
       />
-    </>
+    </LenisProvider>
   );
 }
-
-export default Scribbles;
