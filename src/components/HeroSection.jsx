@@ -1,4 +1,5 @@
 import "./HeroSection.css";
+import { authClient } from "../lib/auth.client";
 
 function HeroSection() {
   return (
@@ -8,9 +9,15 @@ function HeroSection() {
         <p>Let your ideas come to life.</p>
         <button
           className="hero-button"
-          onClick={(e) => {
+          onClick={async (e) => {
             e.preventDefault();
-            window.location.href = "/signup";
+            const { data } = await authClient.getSession();
+            const session = data != null;
+            if (session) {
+              window.location.href = "/dashboard";
+            } else {
+              window.location.href = "/auth";
+            }
           }}
         >
           Get Started

@@ -3,6 +3,17 @@ import { useState } from "react";
 import { authClient } from "../lib/auth.client";
 import React from "react";
 
+export function meta() {
+  return [
+    { title: "Sign Up - Codeboard" },
+    {
+      name: "description",
+      content:
+        "Sign up to Codeboard, the platform that helps you to develop faster.",
+    },
+  ];
+}
+
 export default function SignUp() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -17,13 +28,13 @@ export default function SignUp() {
       },
       {
         onRequest: (ctx) => {
-          // show loading state
+          // loading state
         },
         onSuccess: (ctx) => {
-          // redirect to home
+          window.location.href = "/dashboard";
         },
         onError: (ctx) => {
-          alert(ctx.error);
+          alert(ctx.error.message);
         },
       }
     );
@@ -53,6 +64,9 @@ export default function SignUp() {
         />
         <button type="submit">Sign Up</button>
       </Form>
+      <p>
+        Already have an account? Sign in <a href="/signin">here</a>.
+      </p>
     </div>
   );
 }

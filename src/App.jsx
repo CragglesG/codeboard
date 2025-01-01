@@ -7,7 +7,8 @@ import Footer from "./components/Footer";
 import { LenisProvider } from "./components/LenisInstance";
 import "lenis/dist/lenis.css";
 import { Routes, Route } from "react-router";
-import Scribbles from "./components/Scribbles";
+import Scribbles from "./components/Scribbles.tsx";
+import Dashboard from "./components/Dashboard.jsx";
 
 const Home = () => (
   <LenisProvider>
@@ -25,6 +26,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/scribbles" element={<Scribbles />} />
+      <Route path="/dashboard" element={<Dashboard />} />
     </Routes>
   );
 }

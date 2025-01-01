@@ -20,9 +20,10 @@ import {
   toolbarPlugin,
 } from "@mdxeditor/editor";
 import "@mdxeditor/editor/style.css";
-import Header from "./Header";
-import { LenisProvider } from "./LenisInstance";
+import Header from "./Header.jsx";
+import { LenisProvider } from "./LenisInstance.jsx";
 import "./Scribbles.css";
+import React from "react";
 
 const defaultSnippet = `
   export default function App() {
