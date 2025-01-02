@@ -23,7 +23,23 @@ import "@mdxeditor/editor/style.css";
 import Header from "./Header.jsx";
 import { LenisProvider } from "./LenisInstance.jsx";
 import "./Scribbles.css";
-import React from "react";
+
+function makeid(length) {
+  let result = "";
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const charactersLength = characters.length;
+  let counter = 0;
+  while (counter < length) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    counter += 1;
+  }
+  return result;
+}
+
+async function imageUploadHandler(image: File): Promise<string> {
+  // upload file and return url
+}
 
 const defaultSnippet = `
   export default function App() {
@@ -102,7 +118,9 @@ export default function Scribbles() {
           thematicBreakPlugin(),
           linkPlugin(),
           linkDialogPlugin(),
-          imagePlugin(),
+          imagePlugin({
+            imageUploadHandler: imageUploadHandler,
+          }),
           tablePlugin(),
           codeBlockPlugin({ defaultCodeBlockLanguage: "js" }),
           codeMirrorPlugin({
