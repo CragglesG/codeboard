@@ -13,7 +13,8 @@ dist-ssr
 *.local
 .react-router
 *.crt
-.env
+/.env
+/.env.sentry-build-plugin
 build
 
 # Editor directories and files
