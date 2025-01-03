@@ -22,9 +22,10 @@ import {
 import "@mdxeditor/editor/style.css";
 import Header from "./Header.jsx";
 import { LenisProvider } from "./LenisInstance.jsx";
-import "./Scribbles.css";
+import "../assets/css/Scribbles.css";
+import fs from "node:fs";
 
-function makeid(length) {
+function makeid(length: number) {
   let result = "";
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -38,7 +39,18 @@ function makeid(length) {
 }
 
 async function imageUploadHandler(image: File): Promise<string> {
-  // upload file and return url
+  const formData = new FormData();
+  const imgTempId = makeid(12);
+  formData.append("image", image);
+  formData.append("name", imgTempId + "-" + image.name);
+  formData.append("id", imgTempId);
+  const response = await fetch("/api/images/upload", {
+    method: "POST",
+    body: formData,
+  });
+  const data = await response.json();
+
+  return data.url;
 }
 
 const defaultSnippet = `

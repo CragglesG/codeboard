@@ -1,5 +1,5 @@
 // src/components/Header.jsx
-import "./Header.css";
+import "../assets/css/Header.css";
 import PropTypes from "prop-types";
 
 function Header({ extraItem }) {

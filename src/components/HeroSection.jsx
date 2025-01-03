@@ -1,4 +1,4 @@
-import "./HeroSection.css";
+import "../assets/css/HeroSection.css";
 import { authClient } from "../lib/auth.client";
 import { useState, useEffect } from "react";
 

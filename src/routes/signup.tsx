@@ -2,6 +2,7 @@ import { Form } from "react-router";
 import { useState } from "react";
 import { authClient } from "../lib/auth.client";
 import React from "react";
+import "../assets/css/auth-forms.css";
 
 export function meta() {
   return [
@@ -42,9 +43,16 @@ export default function SignUp() {
 
   return (
     <div>
-      <h2>Sign Up</h2>
-      <Form onSubmit={signUp}>
+      <h2 style={{ width: "5.7rem", marginBottom: "0.5rem" }}>Sign Up</h2>
+      <p style={{ width: "22.6rem" }}>
+        Sign up to Codeboard to start developing faster.
+      </p>
+      <Form
+        onSubmit={signUp}
+        style={{ width: "13rem", marginBottom: "0.5rem" }}
+      >
         <input
+          className="top-input"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -64,7 +72,7 @@ export default function SignUp() {
         />
         <button type="submit">Sign Up</button>
       </Form>
-      <p>
+      <p style={{ width: "18.1rem" }}>
         Already have an account? Sign in <a href="/signin">here</a>.
       </p>
     </div>

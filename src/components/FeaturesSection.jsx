@@ -1,4 +1,4 @@
-import "./FeaturesSection.css";
+import "../assets/css/FeaturesSection.css";
 
 function FeaturesSection() {
   return (
