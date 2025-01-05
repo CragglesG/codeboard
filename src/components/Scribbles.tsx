@@ -25,7 +25,7 @@ import Header from "./Header.jsx";
 import { LenisProvider } from "./LenisInstance.jsx";
 import "../assets/css/Scribbles.css";
 import React from "react";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import fs from "node:fs";
 import { authClient } from "../lib/auth.client";
 
@@ -124,35 +124,37 @@ export default function Scribbles() {
   const [loading, setLoading] = React.useState(true);
   const [authenticated, setAuthenticated] = React.useState(false);
   let data;
+  let file: string, user: string;
+  const ref = React.useRef<MDXEditorMethods>(null);
+  const { state } = useLocation();
+  let navigate = useNavigate();
 
   React.useEffect(() => {
     const checkSession = async () => {
       try {
-        data = await authClient.getSession();
+        ({ data } = await authClient.getSession());
         if (data != null) {
           setAuthenticated(true);
+          ({ file, user } = state || {
+            file: makeid(12),
+            user: data.user.id,
+          });
+          console.log(
+            "Authentication complete. File ID: " + file + ". User ID: " + user
+          );
         } else {
           setAuthenticated(false);
-          window.location.href = "/signin";
+          navigate("/signin", { state: { redirect: "/scribbles" } });
         }
       } catch (error) {
         console.error("Error checking session:", error);
         setAuthenticated(false);
-        window.location.href = "/signin";
-      } finally {
-        setLoading(false);
+        navigate("/signin", { state: { redirect: "/scribbles" } });
       }
     };
 
     checkSession();
   }, []);
-
-  const ref = React.useRef<MDXEditorMethods>(null);
-  const { state } = useLocation();
-  const { file, user } = state || {
-    mdfile: makeid(12),
-    user: authClient.getSession()?.user.id || "unauth",
-  };
 
   React.useEffect(() => {
     const setMarkdown = async () => {
@@ -169,18 +171,41 @@ export default function Scribbles() {
       ref.current?.setMarkdown(await md.text());
     };
     setMarkdown();
-  });
+    setLoading(false);
+  }, [file, user]);
 
-  const saveMarkdown = async () => {
-    const formData = new FormData();
-    formData.append("md", ref.current?.getMarkdown() || "");
-    formData.append("id", file);
-    formData.append("user", user);
-    await fetch(import.meta.env.VITE_PROJECT_URL + "/api/md/save", {
-      method: "POST",
-      body: formData,
-    });
-  };
+  let saveCounter = 0;
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      const saveMarkdown = async () => {
+        console.log("Saving md.. step 1");
+        if (file != undefined && user != undefined) {
+          console.log("Saving md.. step 2");
+          if (saveCounter % 20 == 0) {
+            console.log("Saving md.. step 3");
+            const formData = new FormData();
+            formData.append("md", ref.current?.getMarkdown() | "");
+            formData.append("id", file);
+            formData.append("user", user);
+            await fetch(import.meta.env.VITE_PROJECT_URL + "/api/md/save", {
+              method: "POST",
+              body: formData,
+            });
+            saveCounter += 1;
+          } else {
+            console.log("Saving md.. step 3 failed");
+            saveCounter += 1;
+          }
+        }
+      };
+      saveMarkdown();
+    }, 20000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  });
 
   if (loading) {
     return <div />;
@@ -193,7 +218,6 @@ export default function Scribbles() {
           ref={ref}
           className="dark-editor"
           markdown={ref.current?.getMarkdown() || ""}
-          onChange={saveMarkdown}
           plugins={[
             headingsPlugin(),
             quotePlugin(),

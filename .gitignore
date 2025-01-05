@@ -13,9 +13,11 @@ dist-ssr
 *.local
 .react-router
 *.crt
-/.env
-/.env.sentry-build-plugin
+.env
+.env.sentry-build-plugin
 build
+imgStorage
+mdStorage
 
 # Editor directories and files
 .vscode/*

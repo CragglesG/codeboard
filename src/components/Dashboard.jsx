@@ -1,9 +1,11 @@
 import { authClient } from "../lib/auth.client";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 
 export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
+  let navigate = useNavigate();
 
   useEffect(() => {
     const checkSession = async () => {
@@ -13,19 +15,19 @@ export default function Dashboard() {
           setAuthenticated(true);
         } else {
           setAuthenticated(false);
-          window.location.href = "/signin";
+          navigate("/signin", { state: { redirect: "/dashboard" } });
         }
       } catch (error) {
         console.error("Error checking session:", error);
         setAuthenticated(false);
-        window.location.href = "/signin";
+        navigate("/signin", { state: { redirect: "/dashboard" } });
       } finally {
         setLoading(false);
       }
     };
 
     checkSession();
-  }, []);
+  });
 
   if (loading) {
     return <div />;

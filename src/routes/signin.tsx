@@ -1,4 +1,4 @@
-import { Form } from "react-router";
+import { Form, useLocation, useNavigate } from "react-router";
 import { useState } from "react";
 import { authClient } from "../lib/auth.client";
 import React from "react";
@@ -18,6 +18,9 @@ export function meta() {
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { state } = useLocation();
+  const { redirect, misc } = state || { redirect: "/dashboard", misc: {} };
+  let navigate = useNavigate();
 
   const signIn = async () => {
     await authClient.signIn.email(
@@ -30,14 +33,18 @@ export default function SignIn() {
           // show loading state
         },
         onSuccess: (ctx) => {
-          window.location.href = "/dashboard";
+          navigate(redirect, { state: misc });
         },
         onError: (ctx) => {
           console.log(ctx.error);
-          alert(ctx.error);
+          alert(ctx.error.message);
         },
       }
     );
+  };
+
+  const toSignUp = () => {
+    navigate("/signup", { state: { redirect: redirect, misc: misc } });
   };
 
   return (
@@ -66,7 +73,7 @@ export default function SignIn() {
         <button type="submit">Sign In</button>
       </Form>
       <p style={{ width: "17.4rem" }}>
-        Don't have an account? Sign up <a href="/signup">here</a>.
+        Don't have an account? Sign up <a onClick={toSignUp}>here</a>.
       </p>
     </div>
   );
