@@ -4,7 +4,7 @@ import Header from "./components/Header";
 import HeroSection from "./components/HeroSection";
 import FeaturesSection from "./components/FeaturesSection";
 import Footer from "./components/Footer";
-import { LenisProvider } from "./components/LenisInstance";
+import { ReactLenis } from "lenis-wrap";
 import "lenis/dist/lenis.css";
 import { Routes, Route } from "react-router";
 import Scribbles from "./components/Scribbles.tsx";
@@ -30,20 +30,20 @@ Sentry.init({
 });
 
 const Home = () => (
-  <LenisProvider>
+  <ReactLenis root>
     <div className="App">
       <Header />
       <HeroSection />
       <FeaturesSection />
       <Footer />
     </div>
-  </LenisProvider>
+  </ReactLenis>
 );
 
 const DashboardElement = () => (
-  <LenisProvider>
+  <ReactLenis root>
     <Dashboard />
-  </LenisProvider>
+  </ReactLenis>
 );
 
 function App() {

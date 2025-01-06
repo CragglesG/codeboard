@@ -22,12 +22,11 @@ import {
 } from "@mdxeditor/editor";
 import "@mdxeditor/editor/style.css";
 import Header from "./Header.jsx";
-import { LenisProvider } from "./LenisInstance.jsx";
 import "../assets/css/Scribbles.css";
 import React from "react";
 import { useLocation, useNavigate } from "react-router";
-import fs from "node:fs";
 import { authClient } from "../lib/auth.client";
+import useKeyPress from "./useKeyPress";
 
 function makeid(length: number) {
   let result = "";
@@ -129,8 +128,30 @@ export default function Scribbles() {
   const { state } = useLocation();
   let navigate = useNavigate();
 
-  React.useEffect(() => {
-    const checkSession = async () => {
+  const setMarkdown = async () => {
+    const md = await fetch(
+      import.meta.env.VITE_PROJECT_URL +
+        "/api/md/get?file=" +
+        file +
+        "&user=" +
+        user,
+      {
+        method: "GET",
+      }
+    );
+    ref.current?.setMarkdown(await md.text());
+  };
+
+  const saveCallback = (e) => {
+    saveMarkdown();
+  };
+
+  document.addEventListener("beforeunload", saveCallback);
+  document.addEventListener("pagehide", saveCallback);
+  useKeyPress(["s"], saveCallback, null, true);
+
+  const checkSession = async () => {
+    if (loading) {
       try {
         ({ data } = await authClient.getSession());
         if (data != null) {
@@ -139,9 +160,8 @@ export default function Scribbles() {
             file: makeid(12),
             user: data.user.id,
           });
-          console.log(
-            "Authentication complete. File ID: " + file + ". User ID: " + user
-          );
+          setMarkdown();
+          setLoading(false);
         } else {
           setAuthenticated(false);
           navigate("/signin", { state: { redirect: "/scribbles" } });
@@ -151,114 +171,83 @@ export default function Scribbles() {
         setAuthenticated(false);
         navigate("/signin", { state: { redirect: "/scribbles" } });
       }
-    };
 
-    checkSession();
-  }, []);
-
-  React.useEffect(() => {
-    const setMarkdown = async () => {
-      const md = await fetch(
-        import.meta.env.VITE_PROJECT_URL +
-          "/api/md/get?file=" +
-          file +
-          "&user=" +
-          user,
-        {
-          method: "GET",
-        }
-      );
-      ref.current?.setMarkdown(await md.text());
-    };
-    setMarkdown();
-    setLoading(false);
-  }, [file, user]);
-
-  let saveCounter = 0;
-
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      const saveMarkdown = async () => {
-        console.log("Saving md.. step 1");
-        if (file != undefined && user != undefined) {
-          console.log("Saving md.. step 2");
-          if (saveCounter % 20 == 0) {
-            console.log("Saving md.. step 3");
-            const formData = new FormData();
-            formData.append("md", ref.current?.getMarkdown() | "");
-            formData.append("id", file);
-            formData.append("user", user);
-            await fetch(import.meta.env.VITE_PROJECT_URL + "/api/md/save", {
-              method: "POST",
-              body: formData,
-            });
-            saveCounter += 1;
-          } else {
-            console.log("Saving md.. step 3 failed");
-            saveCounter += 1;
-          }
-        }
+      return () => {
+        document.removeEventListener("beforeunload", saveCallback);
+        document.removeEventListener("pagehide", saveCallback);
       };
-      saveMarkdown();
-    }, 20000);
+    }
+  };
 
-    return () => {
-      clearInterval(interval);
-    };
+  React.useEffect(() => {
+    const csReturn = checkSession();
+
+    return csReturn;
   });
 
-  if (loading) {
-    return <div />;
-  }
+  let lastMarkdown = "";
 
-  if (authenticated) {
-    return (
-      <LenisProvider>
-        <MDXEditor
-          ref={ref}
-          className="dark-editor"
-          markdown={ref.current?.getMarkdown() || ""}
-          plugins={[
-            headingsPlugin(),
-            quotePlugin(),
-            listsPlugin(),
-            thematicBreakPlugin(),
-            linkPlugin(),
-            linkDialogPlugin(),
-            imagePlugin({
-              imageUploadHandler: imageUploadHandler,
-            }),
-            tablePlugin(),
-            codeBlockPlugin({ defaultCodeBlockLanguage: "js" }),
-            codeMirrorPlugin({
-              codeBlockLanguages: {
-                js: "JavaScript",
-                css: "CSS",
-                html: "HTML",
-                python: "Python",
-              },
-            }),
-            markdownShortcutPlugin(),
-            directivesPlugin({
-              directiveDescriptors: [AdmonitionDirectiveDescriptor],
-            }),
-            diffSourcePlugin({ viewMode: "rich-text" }),
-            frontmatterPlugin(),
-            sandpackPlugin({ sandpackConfig: simpleSandpackConfig }),
-            toolbarPlugin({
-              toolbarClassName: "toolbar",
-              toolbarContents: () => (
-                <>
-                  <Header
-                    className="header"
-                    extraItem={<KitchenSinkToolbar />}
-                  />
-                </>
-              ),
-            }),
-          ]}
-        />
-      </LenisProvider>
-    );
-  }
+  const saveMarkdown = async () => {
+    if (file != undefined && user != undefined) {
+      if (ref.current?.getMarkdown() != lastMarkdown) {
+        const formData = new FormData();
+        formData.append("md", ref.current?.getMarkdown() || "");
+        formData.append("id", file);
+        formData.append("user", user);
+        await fetch(import.meta.env.VITE_PROJECT_URL + "/api/md/save", {
+          method: "POST",
+          body: formData,
+        });
+        lastMarkdown = ref.current?.getMarkdown() || "";
+      }
+    }
+  };
+
+  const interval = setInterval(() => {
+    saveMarkdown();
+  }, 5000);
+
+  return (
+    <MDXEditor
+      ref={ref}
+      className="dark-editor"
+      markdown={authenticated ? ref.current?.getMarkdown() : ""}
+      plugins={[
+        headingsPlugin(),
+        quotePlugin(),
+        listsPlugin(),
+        thematicBreakPlugin(),
+        linkPlugin(),
+        linkDialogPlugin(),
+        imagePlugin({
+          imageUploadHandler: imageUploadHandler,
+        }),
+        tablePlugin(),
+        codeBlockPlugin({ defaultCodeBlockLanguage: "js" }),
+        codeMirrorPlugin({
+          codeBlockLanguages: {
+            js: "JavaScript",
+            css: "CSS",
+            html: "HTML",
+            python: "Python",
+          },
+        }),
+        markdownShortcutPlugin(),
+        directivesPlugin({
+          directiveDescriptors: [AdmonitionDirectiveDescriptor],
+        }),
+        diffSourcePlugin({ viewMode: "rich-text" }),
+        frontmatterPlugin(),
+        sandpackPlugin({ sandpackConfig: simpleSandpackConfig }),
+        toolbarPlugin({
+          toolbarClassName: "toolbar",
+          toolbarContents: () => (
+            <>
+              <Header className="header" extraItem={<KitchenSinkToolbar />} />
+            </>
+          ),
+        }),
+      ]}
+    />
+  );
 }

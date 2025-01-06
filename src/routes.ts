@@ -6,6 +6,7 @@ export default [
   route("/api/images/*", "routes/api.images.$.ts"),
   route("/api/md/*", "routes/api.md.$.ts"),
   route("/api/auth/*", "routes/api.auth.$.ts"),
+  route("/errorout", "routes/errorout.tsx"),
   route("/scribbles", "components/Scribbles.tsx"),
   route("/signup", "routes/signup.tsx"),
   route("/signin", "routes/signin.tsx"),
