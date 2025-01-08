@@ -1,15 +1,14 @@
 // src/App.jsx
 import "./App.css";
-import Header from "./components/Header";
-import HeroSection from "./components/HeroSection";
-import FeaturesSection from "./components/FeaturesSection";
-import Footer from "./components/Footer";
-import { ReactLenis } from "lenis-wrap";
-import "lenis/dist/lenis.css";
+import Header from "./components/Header.jsx";
+import HeroSection from "./components/HeroSection.jsx";
+import FeaturesSection from "./components/FeaturesSection.jsx";
+import Footer from "./components/Footer.jsx";
 import { Routes, Route } from "react-router";
-import Scribbles from "./components/Scribbles.tsx";
+import Scribbles from "./components/Scribbles";
 import Dashboard from "./components/Dashboard.jsx";
 import * as Sentry from "@sentry/react";
+import React from "react";
 
 Sentry.init({
   dsn: "https://3b191aca4fcecef5a9eeb55b93032b8a@o4508506807599104.ingest.de.sentry.io/4508574679433296",
@@ -30,21 +29,15 @@ Sentry.init({
 });
 
 const Home = () => (
-  <ReactLenis root>
-    <div className="App">
-      <Header />
-      <HeroSection />
-      <FeaturesSection />
-      <Footer />
-    </div>
-  </ReactLenis>
+  <div className="App">
+    <Header />
+    <HeroSection />
+    <FeaturesSection />
+    <Footer />
+  </div>
 );
 
-const DashboardElement = () => (
-  <ReactLenis root>
-    <Dashboard />
-  </ReactLenis>
-);
+const DashboardElement = () => <Dashboard />;
 
 function App() {
   return (

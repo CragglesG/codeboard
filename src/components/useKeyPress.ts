@@ -26,6 +26,7 @@ const useKeyPress = (
         e.altKey === altKey &&
         e.metaKey === metaKey
       ) {
+        e.preventDefault();
         callbackRef.current(e);
       }
     },
