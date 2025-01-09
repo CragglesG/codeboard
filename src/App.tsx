@@ -1,12 +1,12 @@
 // src/App.jsx
 import "./App.css";
-import Header from "./components/Header.jsx";
-import HeroSection from "./components/HeroSection.jsx";
-import FeaturesSection from "./components/FeaturesSection.jsx";
-import Footer from "./components/Footer.jsx";
+import Header from "./components/Header.js";
+import HeroSection from "./components/HeroSection.js";
+import FeaturesSection from "./components/FeaturesSection.js";
+import Footer from "./components/Footer.js";
 import { Routes, Route } from "react-router";
-import Scribbles from "./components/Scribbles";
-import Dashboard from "./components/Dashboard.jsx";
+import Scribbles from "./routes/Scribbles";
+import Dashboard from "./routes/Dashboard.js";
 import * as Sentry from "@sentry/react";
 import React from "react";
 

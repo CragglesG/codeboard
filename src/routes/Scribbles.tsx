@@ -21,13 +21,13 @@ import {
   type MDXEditorMethods,
 } from "@mdxeditor/editor";
 import "@mdxeditor/editor/style.css";
-import Header from "./Header.jsx";
+import Header from "../components/Header";
 import "../assets/css/Scribbles.css";
 import React from "react";
 import { useLocation, useNavigate } from "react-router";
 import { authClient } from "../lib/auth.client";
-import useKeyPress from "./useKeyPress";
-import * as utils from "./ScribblesUtils";
+import useKeyPress from "../utils/useKeyPress.js";
+import * as utils from "../utils/ScribblesUtils.js";
 
 export const meta = utils.meta;
 
@@ -54,12 +54,10 @@ export default function Scribbles() {
     codeRef.current?.setMarkdown(await md.text());
   };
 
-  const saveCallback = (e) => {
+  let saveCallback = (e) => {
+    e.preventDefault();
     saveMarkdown();
-    navigate(".", { state: { file: file, user: user } });
   };
-
-  useKeyPress(["s"], saveCallback, null, true);
 
   const checkSession = async () => {
     if (loading) {
@@ -71,18 +69,22 @@ export default function Scribbles() {
             file: utils.makeid(12),
             user: data.user.id,
           });
+          navigate(".", { state: { file: file, user: user } });
           setMarkdown();
-          setLoading(false);
           document.addEventListener("beforeunload", saveCallback);
           document.addEventListener("pagehide", saveCallback);
+          document.addEventListener("visibilitychange", saveCallback);
+          setLoading(false);
         } else {
           setAuthenticated(false);
-          navigate("/signin", { state: { redirect: "/scribbles" } });
+          navigate("/signin", {
+            state: { redirect: "/scribbles", misc: state },
+          });
         }
       } catch (error) {
         console.error("Error checking session:", error);
         setAuthenticated(false);
-        navigate("/signin", { state: { redirect: "/scribbles" } });
+        navigate("/signin", { state: { redirect: "/scribbles", misc: state } });
       }
     }
   };
@@ -92,8 +94,11 @@ export default function Scribbles() {
     return () => {
       document.removeEventListener("beforeunload", saveCallback);
       document.removeEventListener("pagehide", saveCallback);
+      document.removeEventListener("visibilitychange", saveCallback);
     };
   });
+
+  useKeyPress(["s"], saveCallback, null, true);
 
   let lastMarkdown = "";
 
