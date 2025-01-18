@@ -14,6 +14,7 @@ function FeaturesSection() {
         </div>
         <div className="feature-card">
           <h3>Boards</h3>
+          <h4>Coming Soon</h4>
           <p>
             Refine and develop your ideas with the help of specially-designed AI
             and NLP.
@@ -21,6 +22,7 @@ function FeaturesSection() {
         </div>
         <div className="feature-card">
           <h3>Jumpstarts</h3>
+          <h4>Coming Soon</h4>
           <p>
             Get making straight away with pre-configured dev environments ready
             just when you need them.
@@ -28,6 +30,7 @@ function FeaturesSection() {
         </div>
         <div className="feature-card">
           <h3>Prototypes</h3>
+          <h4>Coming Soon</h4>
           <p>
             Tweak important features of your implementation and automatically
             create new versions.

@@ -1,41 +1,49 @@
 /* src/components/Header.css */
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #282c34;
-    color: white;
-    top: 0px;
-    min-width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  background-color: #282c34;
+  color: white;
+  top: 1rem;
+  width: 90%;
+  margin: 0 auto;
+  height: 5rem;
+  border-radius: 3rem;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  position: fixed;
+  left: 0;
+  right: 0;
 }
 
 .logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: white;
-    text-decoration: none;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
 }
 
 .logo:hover {
-    color: white;
-    text-decoration: none;
-    filter: drop-shadow(0 0 2em #646cffaa);
+  color: white;
+  text-decoration: none;
+  filter: drop-shadow(0 0 2em #646cffaa);
 }
 
 .logo.react:hover {
-    filter: drop-shadow(0 0 2em #61dafbaa);
+  filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
 .nav a {
-    margin: 0 2rem;
-    font-size: 1.2rem;
-    color: white;
-    text-decoration: none;
+  margin: 0 2rem;
+  font-size: 1.2rem;
+  color: white;
+  text-decoration: none;
 }
 
 .nav a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }

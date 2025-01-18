@@ -1,12 +1,12 @@
 // src/App.jsx
 import "./App.css";
-import Header from "./components/Header.js";
-import HeroSection from "./components/HeroSection.js";
-import FeaturesSection from "./components/FeaturesSection.js";
-import Footer from "./components/Footer.js";
+import Header from "./components/Header";
+import HeroSection from "./components/HeroSection";
+import FeaturesSection from "./components/FeaturesSection";
+import Footer from "./components/Footer";
 import { Routes, Route } from "react-router";
 import Scribbles from "./routes/Scribbles";
-import Dashboard from "./routes/Dashboard.js";
+import Dashboard from "./routes/Dashboard";
 import * as Sentry from "@sentry/react";
 import React from "react";
 
@@ -37,14 +37,12 @@ const Home = () => (
   </div>
 );
 
-const DashboardElement = () => <Dashboard />;
-
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/scribbles" element={<Scribbles />} />
-      <Route path="/dashboard" element={<DashboardElement />} />
+      <Route path="/dashboard" element={<Dashboard />} />
     </Routes>
   );
 }

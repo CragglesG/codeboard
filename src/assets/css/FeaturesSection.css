@@ -1,41 +1,46 @@
 /* src/components/FeaturesSection.css */
 .features {
-    text-align: center;
-    padding: 60px 20px;
-    background-color: #f9f9f9;
+  text-align: center;
+  padding: 60px 20px;
+  background-color: #f9f9f9;
 }
 
 .feature-cards {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .feature-card {
-    background: white;
-    border-radius: 8px;
-    padding: 20px;
-    margin: 10px;
-    width: 40%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 10px;
+  width: 40%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
 }
 
 .feature-card:hover {
-    transform: translateY(-10px);
+  transform: translateY(-10px);
 }
 
 .feature-card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
 }
 
 .feature-card p {
-    font-size: 1rem;
-    color: #666;
+  font-size: 1rem;
+  color: #666;
 }
 
 h2,
-h3 {
-    color: #333;
+h3,
+h4 {
+  color: #333;
+}
+
+h4 {
+  margin: 0;
 }

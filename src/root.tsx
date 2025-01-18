@@ -7,6 +7,7 @@ import {
   useRouteError,
 } from "react-router";
 import React from "react";
+import "./assets/css/global.css";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -42,7 +43,7 @@ export function ErrorBoundary() {
       </head>
       <body
         style={{
-          display: "auto",
+          display: "block",
           margin: "auto auto",
           verticalAlign: "middle",
           alignItems: "center",
@@ -50,8 +51,6 @@ export function ErrorBoundary() {
         }}
       >
         <h1>Oh no!</h1>
-        <br />
-        <br />
         <p>
           It looks like something went wrong. The error has been reported to our
           team.

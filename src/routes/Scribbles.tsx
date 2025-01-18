@@ -26,8 +26,8 @@ import "../assets/css/Scribbles.css";
 import React from "react";
 import { useLocation, useNavigate } from "react-router";
 import { authClient } from "../lib/auth.client";
-import useKeyPress from "../utils/useKeyPress.js";
-import * as utils from "../utils/ScribblesUtils.js";
+import useKeyPress from "../utils/useKeyPress";
+import * as utils from "../utils/ScribblesUtils";
 
 export const meta = utils.meta;
 

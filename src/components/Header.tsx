@@ -32,12 +32,13 @@ function ActionLink() {
   }
 }
 
-export default function Header({ extraItem = <div /> }) {
+export default function Header({ extraItem = <div />, actionlink = true }) {
   Header.propTypes = {
     extraItem: PropTypes.oneOfType([
       PropTypes.element,
       PropTypes.arrayOf(PropTypes.element),
     ]),
+    actionlink: PropTypes.bool,
   };
 
   return (
@@ -46,9 +47,7 @@ export default function Header({ extraItem = <div /> }) {
         Codeboard
       </a>
       {extraItem}
-      <nav className="nav">
-        <ActionLink />
-      </nav>
+      <nav className="nav">{actionlink ? <ActionLink /> : null}</nav>
     </header>
   );
 }

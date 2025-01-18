@@ -1,0 +1,13 @@
+body {
+  display: block;
+  margin: auto auto;
+  vertical-align: middle;
+  align-items: center;
+  justify-content: center;
+}
+
+#root {
+  padding: 0rem;
+  max-width: max-content;
+  text-align: center;
+}

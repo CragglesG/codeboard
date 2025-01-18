@@ -1,13 +1,3 @@
-#root {
-    padding: 0rem;
-    max-width: max-content;
-    text-align: center;
-}
-
 .read-the-docs {
-    color: #888;
-}
-
-.header {
-    position: fixed;
+  color: #888;
 }
