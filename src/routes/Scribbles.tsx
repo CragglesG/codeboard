@@ -34,7 +34,6 @@ export const meta = utils.meta;
 export default function Scribbles() {
   const [loading, setLoading] = React.useState(true);
   const [authenticated, setAuthenticated] = React.useState(false);
-  let data;
   let file: string, user: string;
   const codeRef = React.useRef<MDXEditorMethods>(null);
   const { state } = useLocation();
@@ -62,13 +61,10 @@ export default function Scribbles() {
   const checkSession = async () => {
     if (loading) {
       try {
-        ({ data } = await authClient.getSession());
+        const { data } = await authClient.getSession();
         if (data != null) {
           setAuthenticated(true);
-          ({ file, user } = state || {
-            file: utils.makeid(12),
-            user: data.user.id,
-          });
+          ({ file, user } = state);
           navigate(".", { state: { file: file, user: user } });
           setMarkdown();
           document.addEventListener("beforeunload", saveCallback);

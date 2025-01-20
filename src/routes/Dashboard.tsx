@@ -17,23 +17,28 @@ export function meta() {
   ];
 }
 
-export function ListScribbles(id: string) {
-  const [loading, setloading] = useState(true);
-  let scribbles: string;
+export function ListScribbles({ id }: { id: string }) {
+  const [loading, setLoading] = useState(true);
+  let navigate = useNavigate();
+  const [scribbles, setScribbles] = useState<string[]>([]);
 
-  useEffect(() => {
-    const fetchScribbles = async () => {
+  const fetchScribbles = async () => {
+    if (loading) {
       const form = new FormData();
       form.append("user", id);
-      scribbles = await (
-        await fetch(import.meta.env.VITE_PROJECT_URL + "/api/listmd", {
-          method: "POST",
-          body: form,
-        })
-      ).json();
-      setloading(false);
-    };
+      setScribbles(
+        await (
+          await fetch(import.meta.env.VITE_PROJECT_URL + "/api/listmd", {
+            method: "POST",
+            body: form,
+          })
+        ).json()
+      );
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchScribbles();
   });
 
@@ -41,34 +46,37 @@ export function ListScribbles(id: string) {
     const rows = [];
     for (let i = 0; i < scribbles.length; i++) {
       rows.push(
-        <li>
-          <a href={"/scribbles/" + scribbles[i].id}>{scribbles[i].id}</a>
-        </li>
+        <>
+          <a
+            onClick={() => {
+              navigate("/scribbles", {
+                state: { file: scribbles[i], user: id },
+              });
+            }}
+          >
+            {scribbles[i]}
+          </a>
+          <br />
+        </>
       );
     }
-    return (
-      <div>
-        <ul>{rows}</ul>
-      </div>
-    );
+    return <div>{rows}</div>;
   }
 }
 
-// TODO: Fix above function. It currently sends null to the server and improperly decodes the response.
-
 export default function Dashboard() {
-  const [loading, setLoading] = useState(true);
-  const [authenticated, setAuthenticated] = useState(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [authenticated, setAuthenticated] = useState<boolean>(false);
+  const [userId, setUserId] = useState<string | null>(null);
   let navigate = useNavigate();
-  let id: string;
 
-  useEffect(() => {
-    const checkSession = async () => {
+  const checkSession = async () => {
+    if (loading) {
       try {
         const { data } = await authClient.getSession();
         if (data != null) {
           setAuthenticated(true);
-          id = data.user.id;
+          setUserId(data.user.id);
         } else {
           setAuthenticated(false);
           navigate("/signin", { state: { redirect: "/dashboard" } });
@@ -80,8 +88,10 @@ export default function Dashboard() {
       } finally {
         setLoading(false);
       }
-    };
+    }
+  };
 
+  useEffect(() => {
     checkSession();
   });
 
@@ -91,11 +101,12 @@ export default function Dashboard() {
 
   if (authenticated) {
     return (
-      <div style={{ width: "100%" }}>
+      <div id="dashboard">
         <Header actionlink={false} />
         <h1>Dashboard</h1>
         <h2>Scribbles</h2>
-        {<ListScribbles id={id} />}
+        {<ListScribbles id={userId} />}
+        <a href="/newscribble">New Scribble</a>
       </div>
     );
   } else {

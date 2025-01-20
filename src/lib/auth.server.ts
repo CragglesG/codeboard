@@ -6,9 +6,9 @@ const { Pool } = pkg;
 
 export const auth = betterAuth({
   database: new Pool({
-    ssl: {
-      ca: fs.readFileSync(process.env.DB_SSL_CA || "./db.crt").toString(),
-    },
+    // ssl: {
+    //   ca: fs.readFileSync(process.env.DB_SSL_CA || "./db.crt").toString(),
+    // },
     connectionString: process.env.DB_URL,
   }),
   emailAndPassword: {

@@ -13,13 +13,10 @@ export async function action({ request }: Route.ActionArgs) {
 
   fs.writeFileSync("mdStorage/" + user + "/" + id, Buffer.from(file));
 
-  console.log("Writing md to file");
-
   return new Response("Success");
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-  console.log("Reading md from file");
   const query = new URLSearchParams(request.url.split("?")[1]);
   const file = query.get("file") as string;
   const user = query.get("user") as string;
