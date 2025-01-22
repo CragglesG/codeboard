@@ -2,7 +2,7 @@ import { Form, useNavigate, useLocation } from "react-router";
 import { useState } from "react";
 import { authClient } from "../lib/auth.client";
 import React from "react";
-import "../assets/css/auth-forms.css";
+import "../assets/css/forms.css";
 
 export function meta() {
   return [

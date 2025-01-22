@@ -20,7 +20,7 @@ export function meta() {
 export function ListScribbles({ id }: { id: string }) {
   const [loading, setLoading] = useState(true);
   let navigate = useNavigate();
-  const [scribbles, setScribbles] = useState<string[]>([]);
+  const [scribbles, setScribbles] = useState();
 
   const fetchScribbles = async () => {
     if (loading) {
@@ -44,17 +44,17 @@ export function ListScribbles({ id }: { id: string }) {
 
   if (!loading && scribbles) {
     const rows = [];
-    for (let i = 0; i < scribbles.length; i++) {
+    for (let i = 0; i < scribbles.files.length; i++) {
       rows.push(
         <>
           <a
             onClick={() => {
               navigate("/scribbles", {
-                state: { file: scribbles[i], user: id },
+                state: { file: scribbles.files[i], user: id },
               });
             }}
           >
-            {scribbles[i]}
+            {scribbles.titles[i]}
           </a>
           <br />
         </>

@@ -2,7 +2,7 @@
 @import url("@radix-ui/colors/mauve-dark.css");
 
 .dark-editor {
-  --accentBase: var(--tomato-1);
+  --accentBase: --color-blue-1;
   --accentBgSubtle: var(--tomato-2);
   --accentBg: var(--tomato-3);
   --accentBgHover: var(--tomato-4);

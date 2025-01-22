@@ -1,32 +1,32 @@
 /* src/components/HeroSection.css */
 .hero {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 80vh;
-    background: url("/path-to-your-image.jpg") no-repeat center center/cover;
-    color: white;
-    text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  background: url("/path-to-your-image.jpg") no-repeat center center/cover;
+  color: white;
+  text-align: center;
 }
 
 .hero-content {
-    max-width: 100%;
+  max-width: 100%;
 }
 
 .hero h1 {
-    font-size: 3rem;
-    margin-bottom: 20px;
+  /* font-size: 3rem; */
+  margin-bottom: 20px;
 }
 
 .hero-button {
-    padding: 10px 20px;
-    font-size: 1.2rem;
-    color: #282c34;
-    background-color: #61dafb;
-    border: none;
-    cursor: pointer;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  color: #282c34;
+  background-color: #61dafb;
+  border: none;
+  cursor: pointer;
 }
 
 .hero-button:hover {
-    background-color: #21a1f1;
+  background-color: #21a1f1;
 }

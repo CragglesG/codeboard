@@ -2,6 +2,7 @@ import { authClient } from "../lib/auth.client";
 import React from "react";
 import { Form, useNavigate, useLocation } from "react-router";
 import { makeid } from "../utils/ScribblesUtils";
+import "../assets/css/forms.css";
 
 export default function NewScribble() {
   const [loading, setLoading] = React.useState(true);
@@ -48,7 +49,7 @@ export default function NewScribble() {
     formData.append("md", `---\ntitle: ${title}\n---\n`);
     formData.append("user", user);
     formData.append("id", file);
-    await fetch(import.meta.env.VITE_PROJECT_URL + "/api/md", {
+    await fetch(import.meta.env.VITE_PROJECT_URL + "/api/md/save", {
       method: "POST",
       body: formData,
     });
@@ -58,16 +59,18 @@ export default function NewScribble() {
   if (!loading && authenticated) {
     return (
       <div>
-        <h1>Create a New Scribble</h1>
+        <h2>Create a New Scribble</h2>
         <Form onSubmit={createScribble}>
           <input
             type="text"
             name="title"
             placeholder="Title"
+            className="top-input"
             onChange={(e) => {
               setTitle(e.target.value);
             }}
           />
+          <br />
           <button type="submit">Create</button>
         </Form>
       </div>
