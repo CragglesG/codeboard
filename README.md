@@ -1,6 +1,22 @@
 # Codeboard
 
-Codeboard is a prototype of a platform that helps you to go from an idea to a ship in no time. It uses AI to do the boring stuff, but uses purpose-built models and provides different freedoms to them based on the task.
+Codeboard is a prototype of a platform that helps you to go from an idea to a ship in no time. It's built with React Router v7, Vite, and Tailwind CSS.
+
+_Found a bug? Want a new feature? [Create an issue!](https://github.com/CragglesG/codeboard/issues/new) (Please check for an existing one first to avoid duplicates!)_
+
+_Want to contribute? You can find good first issues [here](https://github.com/CragglesG/codeboard/contribute)._
+
+## Local Development
+
+Run the following commands to clone, install, and run Codeboard locally:
+
+```bash
+git clone https://github.com/CragglesG/codeboard && cd codeboard
+bun i
+bun dev
+```
+
+To contribute back to Codeboard, fork the repository and create a PR with your changes.
 
 ## Key Features
 
@@ -8,7 +24,7 @@ Codeboard has 4 key features, each one seamlessly integrated with the next.
 
 ### Scribbles
 
-Jot down ideas on-the-go in an editor supporting markdown, drawings, and charts.
+Jot down ideas on-the-go in an editor supporting markdown, and soon, drawings and charts.
 
 ### Boards (Coming Soon)
 
@@ -21,7 +37,3 @@ Get creating straight away with pre-configured dev environments ready just when 
 ### Prototypes (Coming Soon)
 
 Tweak important features of your implementation and automatically create new versions that incorporate even more of your idea. Go from a rushed version 1 to a final ship in no time.
-
-## Framework
-
-Codeboard is currently being built on Vite + React. It will likely be a website for some time before desktop and mobile apps are published.
