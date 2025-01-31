@@ -1,1 +1,8 @@
-{ "rewrites": [{ "source": "/(.*)", "destination": "/client/*?/index.html" }] }
+{
+  "functions": {
+    "server.js": {
+      "runtime": "nodejs22.x"
+    }
+  },
+  "routes": [{ "src": "/(.*)", "dest": "server.js" }]
+}
