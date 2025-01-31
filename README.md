@@ -8,17 +8,17 @@ Codeboard has 4 key features, each one seamlessly integrated with the next.
 
 ### Scribbles
 
-Jot down ideas on-the-go in an editor supporting markdown, drawings, and charts. 
+Jot down ideas on-the-go in an editor supporting markdown, drawings, and charts.
 
-### Boards
+### Boards (Coming Soon)
 
 Refine and develop your ideas with the help of specially designed AI (**not** chatbots) and NLP. Define processes with flowcharts that understand your idea, and define specifics like frameworks with extensive options. Use different data representations/charts depending on the type of information you are specifying, so you don't waste time ineffectively preserving ideas. Never forget specifics again.
 
-### Jumpstarts
+### Jumpstarts (Coming Soon)
 
-Get creating straight away with pre-configured dev environments ready just when you need them, with no need to wait for them to boot. Skip the boring stuff with boilerplate written by AI (once again, specially designed and not generalised). 
+Get creating straight away with pre-configured dev environments ready just when you need them, with no need to wait for them to boot. Skip the boring stuff with boilerplate written by AI (once again, specially designed and not generalised).
 
-### Prototypes
+### Prototypes (Coming Soon)
 
 Tweak important features of your implementation and automatically create new versions that incorporate even more of your idea. Go from a rushed version 1 to a final ship in no time.
 
