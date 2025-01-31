@@ -4,21 +4,26 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "react-router dev",
-    "build": "react-router build",
+    "build": "react-router build && node vercel/prepare.js",
+    "dev": "env NODE_ENV=development node ./dev-server.js",
+    "typecheck": "react-router typegen && tsc",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
     "@mdxeditor/editor": "^3.21.2",
+    "@react-router/express": "^7.1.4",
     "@react-router/node": "^7.1.4",
     "@sentry/node": "^8.53.0",
     "@sentry/react": "^8.53.0",
     "@sentry/vite-plugin": "^2.23.0",
+    "@tailwindcss/vite": "^4.0.2",
     "@types/node": "^22.12.0",
     "@types/pg": "^8.11.11",
     "@types/react-router": "^5.1.20",
+    "@vercel/node": "^5.0.5",
     "better-auth": "^1.1.15",
+    "express": "^4.21.2",
     "isbot": "^5.1.22",
     "lenis": "^1.1.20",
     "lenis-wrap": "npm:@studio-freight/react-lenis",
@@ -29,7 +34,8 @@
     "react-hook-form": "^7.54.2",
     "react-router": "^7.1.4",
     "typescript-eslint": "^8.22.0",
-    "vite-plugin-env-compatible": "^2.0.1"
+    "vite-plugin-env-compatible": "^2.0.1",
+    "vite-tsconfig-paths": "^5.1.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
