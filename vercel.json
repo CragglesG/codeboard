@@ -1,8 +1,0 @@
-{
-  "functions": {
-    "server.js": {
-      "memory": 1024
-    }
-  },
-  "routes": [{ "src": "/(.*)", "dest": "server.js" }]
-}
