@@ -37,3 +37,19 @@ Get creating straight away with pre-configured dev environments ready just when 
 ### Prototypes (Coming Soon)
 
 Tweak important features of your implementation and automatically create new versions that incorporate even more of your idea. Go from a rushed version 1 to a final ship in no time.
+
+## Implementation
+
+### Scribbles
+
+Codeboard currently stores scribbles and images on the server disk. Uploaded images are saved with randomised 12-character alphanumeric IDs as their filenames. Scribbles are saved in a folder specific to the user, also with randomised 12-character alphanumeric IDs for filenames. They utilise frontmatter to store data such as the title, which is displayed on the dashboard. Scribbles automatically save every 5 seconds if changes have been made, and will save on navigation away from the tab, in addition to saving when Ctrl+S is pressed.
+
+### Dashboard
+
+The dashboard uses the `/api/listmd` endpoint to list the scribbles files associated with a user, and then displays them as a list of links. Upon clicking on the `New Scribble` link, the user is redirected to `/newscribble`, where they can choose a title for their scribble.
+
+### Backend
+
+Codeboard currently uses Better Auth and Supabase to manage authentication, and React Router to manage navigation and state. Multiple API endpoints are exposed for client-side use, namely, `/api/auth`, `/api/images`, `/api/listmd`, and `/api/md`. All of these endpoints – with the exception of `/api/listmd` – support both GET and POST requests. Upon navigation, data is sent using states instead of URL parameters. This ensures cleaner URLs and uses React Router's built-in navigation and state retrieval utilities, but it makes it harder to share projects and create reproducible results (this will likely be fixed at some point in the future). The `/dashboard` and `/scribbles` routes are only accessible by authenticated users, and links to those pages and authentication pages will automatically redirect based on the authentication status.
+
+
