@@ -1,4 +1,4 @@
-import { type RouteConfig, route, index } from "@react-router/dev/routes";
+import { type RouteConfig, route } from "@react-router/dev/routes";
 
 export default [
   route("/newscribble", "routes/newscribble.tsx"),
@@ -10,5 +10,6 @@ export default [
   route("/scribbles", "routes/Scribbles.tsx"),
   route("/signup", "routes/signup.tsx"),
   route("/signin", "routes/signin.tsx"),
+  route("/", "App.tsx"),
   route("*", "catchall.tsx"),
 ] satisfies RouteConfig;
