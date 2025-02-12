@@ -19,7 +19,7 @@ const Home = () => (
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route index path="/" element={<Home />} />
       <Route path="/scribbles" element={<Scribbles />} />
       <Route path="/dashboard" element={<Dashboard />} />
     </Routes>
