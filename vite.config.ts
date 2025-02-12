@@ -7,21 +7,16 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig(({ isSsrBuild, command }) => ({
   build: {
-    rollupOptions: isSsrBuild
-      ? {
-          input: "./server/app.ts",
-        }
-      : undefined,
     sourcemap: false,
   },
   ssr: {
     noExternal: command === "build" ? true : undefined,
   },
   plugins: [
-    tailwindcss(),
     reactRouter(),
-    tsconfigPaths(),
     envCompatible(),
+    tsconfigPaths(),
+    tailwindcss(),
     sentryVitePlugin({
       org: "craigs-org",
       project: "codeboard",

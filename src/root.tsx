@@ -8,6 +8,7 @@ import {
 } from "react-router";
 import React from "react";
 import "./assets/css/global.css";
+import { Analytics } from "@vercel/analytics/react";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -22,6 +23,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         {children}
         <ScrollRestoration />
         <Scripts />
+        <Analytics />
       </body>
     </html>
   );

@@ -8,7 +8,6 @@ export default [
   route("/api/md/*", "routes/api.md.$.ts"),
   route("/api/auth/*", "routes/api.auth.$.ts"),
   route("/api/listmd/*", "routes/api.listmd.$.ts"),
-  route("/errorout", "routes/errorout.tsx"),
   route("/scribbles", "routes/Scribbles.tsx"),
   route("/signup", "routes/signup.tsx"),
   route("/signin", "routes/signin.tsx"),
