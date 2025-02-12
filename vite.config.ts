@@ -1,4 +1,3 @@
-import { sentryVitePlugin } from "@sentry/vite-plugin";
 import envCompatible from "vite-plugin-env-compatible";
 import { reactRouter } from "@react-router/dev/vite";
 import tailwindcss from "@tailwindcss/vite";
@@ -12,14 +11,5 @@ export default defineConfig(({ command }) => ({
   ssr: {
     noExternal: command === "build" ? true : undefined,
   },
-  plugins: [
-    reactRouter(),
-    envCompatible(),
-    tsconfigPaths(),
-    tailwindcss(),
-    sentryVitePlugin({
-      org: "craigs-org",
-      project: "codeboard",
-    }),
-  ],
+  plugins: [reactRouter(), envCompatible(), tsconfigPaths(), tailwindcss()],
 }));
