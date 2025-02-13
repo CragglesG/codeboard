@@ -1,6 +1,5 @@
 import React from "react";
-import App from "./App";
 
 export default function Component() {
-  return <App />;
+  return (<><h1>404</h1><p>This page could not be found.</p></>);
 }
