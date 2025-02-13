@@ -31,8 +31,6 @@ import * as utils from "../utils/ScribblesUtils";
 
 export const meta = utils.meta;
 
-// Add different tab names based on title
-
 export default function Scribbles() {
   const [loading, setLoading] = React.useState(true);
   const [authenticated, setAuthenticated] = React.useState(false);
