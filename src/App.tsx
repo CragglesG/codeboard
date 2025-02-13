@@ -17,7 +17,7 @@ const Home = () => (
 function App() {
   return (
     <Routes>
-      <Route index path="/" element={<Home />} />
+      <Route index path="*" element={<Home />} />
     </Routes>
   );
 }
