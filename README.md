@@ -42,7 +42,7 @@ Tweak important features of your implementation and automatically create new ver
 
 ### Scribbles
 
-Codeboard currently stores scribbles and images on the server disk. Uploaded images are saved with randomised 12-character alphanumeric IDs as their filenames. Scribbles are saved in a folder specific to the user, also with randomised 12-character alphanumeric IDs for filenames. They utilise frontmatter to store data such as the title, which is displayed on the dashboard. Scribbles automatically save every 5 seconds if changes have been made, and will save on navigation away from the tab, in addition to saving when Ctrl+S is pressed.
+Codeboard currently stores scribbles and images using Vercel Blob storage. Uploaded images are saved with randomised 20-character alphanumeric IDs as their filenames. Scribbles are saved in a folder specific to the user, also with randomised 20-character alphanumeric IDs for filenames. They utilise frontmatter to store data such as the title, which is displayed on the dashboard. Scribbles automatically save every 5 seconds if changes have been made, and will save on navigation away from the tab, in addition to saving when Ctrl+S is pressed.
 
 ### Dashboard
 
@@ -51,10 +51,3 @@ The dashboard uses the `/api/listmd` endpoint to list the scribbles files associ
 ### Backend
 
 Codeboard currently uses Better Auth and Supabase to manage authentication, and React Router to manage navigation and state. Multiple API endpoints are exposed for client-side use, namely, `/api/auth`, `/api/images`, `/api/listmd`, and `/api/md`. All of these endpoints – with the exception of `/api/listmd` – support both GET and POST requests. Upon navigation, data is sent using states instead of URL parameters. This ensures cleaner URLs and uses React Router's built-in navigation and state retrieval utilities, but it makes it harder to share projects and create reproducible results (this will likely be fixed at some point in the future). The `/dashboard` and `/scribbles` routes are only accessible by authenticated users, and links to those pages and authentication pages will automatically redirect based on the authentication status.
-
-
-
-## Disclaimer
-
-This was my first time building a React app, so I did use Copilot for help with debugging and getting started.
-
