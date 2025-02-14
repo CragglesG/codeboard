@@ -1,6 +1,6 @@
 import { authClient } from "../lib/auth.client";
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router";
+import { useNavigate } from "react-router";
 import Header from "../components/Header";
 import "../assets/css/Dashboard.css";
 import { cp } from "node:fs";
@@ -105,7 +105,7 @@ export default function Dashboard() {
         <Header actionlink={false} />
         <h1>Dashboard</h1>
         <h2>Scribbles</h2>
-        {<ListScribbles id={userId} />}
+        {<ListScribbles id={userId || ""} />}
         <a href="/newscribble">New Scribble</a>
       </div>
     );

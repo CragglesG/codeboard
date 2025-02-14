@@ -13,10 +13,10 @@ export function makeid(length: number) {
 
 export async function imageUploadHandler(image: File): Promise<string> {
   const formData = new FormData();
-  const imgTempId = makeid(12);
+  const imgTempId = makeid(20);
   formData.append("image", image);
   formData.append("id", imgTempId);
-  const response = await fetch("/api/images/upload", {
+  const response = await fetch("/api/images", {
     method: "POST",
     body: formData,
   });

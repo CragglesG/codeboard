@@ -1,18 +1,18 @@
-import { Route } from "../project/+types";
-import fs from "node:fs";
+import type { Route } from "./+types/api.listmd.$";
+import { list } from "@vercel/blob";
 
 export async function action({ request }: Route.ActionArgs) {
   const requestForm = await request.formData();
   const id = requestForm.get("user");
 
   if (id != null) {
-    const files = fs.readdirSync("mdStorage/" + id);
+    const files = (await list({ prefix: `mdStorage/${id}/` })).blobs;
     let fileTitles: string[] = [];
     for (let i = 0; i < files.length; i++) {
       let md = await fetch(
         import.meta.env.VITE_PROJECT_URL +
-          "/api/md/get?file=" +
-          files[i] +
+          "/api/md?file=" +
+          files[i].pathname.split("/")[2] +
           "&user=" +
           id,
         {

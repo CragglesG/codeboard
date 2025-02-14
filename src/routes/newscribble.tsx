@@ -20,7 +20,7 @@ export default function NewScribble() {
         if (data != null) {
           setAuthenticated(true);
           const { file, user } = state || {
-            file: makeid(12),
+            file: makeid(20),
             user: data.user.id,
           };
           setFile(file);
@@ -49,7 +49,7 @@ export default function NewScribble() {
     formData.append("md", `---\ntitle: ${title}\n---\n`);
     formData.append("user", user);
     formData.append("id", file);
-    await fetch(import.meta.env.VITE_PROJECT_URL + "/api/md/save", {
+    await fetch(import.meta.env.VITE_PROJECT_URL + "/api/md", {
       method: "POST",
       body: formData,
     });
@@ -59,7 +59,7 @@ export default function NewScribble() {
   if (!loading && authenticated) {
     return (
       <div>
-        <h2>Create a New Scribble</h2>
+        <h2>Create A New Scribble</h2>
         <Form onSubmit={createScribble}>
           <input
             type="text"
