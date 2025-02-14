@@ -42,7 +42,7 @@ export default function Scribbles() {
   const setMarkdown = async () => {
     const md = await fetch(
       import.meta.env.VITE_PROJECT_URL +
-        "/api/md/get?file=" +
+        "/api/md?file=" +
         file +
         "&user=" +
         user,
@@ -105,7 +105,7 @@ export default function Scribbles() {
         formData.append("md", codeRef.current?.getMarkdown() || "");
         formData.append("id", file);
         formData.append("user", user);
-        await fetch(import.meta.env.VITE_PROJECT_URL + "/api/md/save", {
+        await fetch(import.meta.env.VITE_PROJECT_URL + "/api/md", {
           method: "POST",
           body: formData,
         });
