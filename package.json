@@ -15,6 +15,7 @@
     "@react-router/node": "^7.1.5",
     "@react-router/serve": "^7.1.5",
     "@vercel/analytics": "^1.5.0",
+    "@vercel/blob": "^0.27.1",
     "@vercel/react-router": "^1.0.2",
     "better-auth": "^1.1.15",
     "isbot": "^5.1.22",
