@@ -1,9 +1,9 @@
+
 import { authClient } from "../lib/auth.client";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router";
 import Header from "../components/Header";
 import "../assets/css/Dashboard.css";
-import { cp } from "node:fs";
 
 export function meta() {
   return [

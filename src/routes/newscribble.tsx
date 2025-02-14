@@ -49,7 +49,7 @@ export default function NewScribble() {
     formData.append("md", `---\ntitle: ${title}\n---\n`);
     formData.append("user", user);
     formData.append("id", file);
-    await fetch(import.meta.env.VITE_PROJECT_URL + "/api/md/save", {
+    await fetch(import.meta.env.VITE_PROJECT_URL + "/api/md", {
       method: "POST",
       body: formData,
     });

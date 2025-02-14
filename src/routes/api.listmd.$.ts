@@ -1,12 +1,12 @@
 import { Route } from "../project/+types";
-import fs from "node:fs";
+import { Blob } from "@vercel/blob";
 
 export async function action({ request }: Route.ActionArgs) {
   const requestForm = await request.formData();
   const id = requestForm.get("user");
 
   if (id != null) {
-    const files = fs.readdirSync("mdStorage/" + id);
+    const files = await Blob.list("mdStorage/" + id);
     let fileTitles: string[] = [];
     for (let i = 0; i < files.length; i++) {
       let md = await fetch(
