@@ -2,8 +2,8 @@ import { authClient } from "../lib/auth.client";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import Header from "../components/Header";
+import ProtectedRoute from "../utils/ProtectedRoute";
 import "../assets/css/Dashboard.css";
-import { cp } from "node:fs";
 
 export function meta() {
   return [
@@ -20,7 +20,7 @@ export function meta() {
 export function ListScribbles({ id }: { id: string }) {
   const [loading, setLoading] = useState(true);
   let navigate = useNavigate();
-  const [scribbles, setScribbles] = useState();
+  const [scribbles, setScribbles] = useState<object>();
 
   const fetchScribbles = async () => {
     if (loading) {
@@ -46,7 +46,7 @@ export function ListScribbles({ id }: { id: string }) {
     const rows = [];
     for (let i = 0; i < scribbles.files.length; i++) {
       rows.push(
-        <>
+        <li key={i}>
           <a
             onClick={() => {
               navigate("/scribbles", {
@@ -57,50 +57,18 @@ export function ListScribbles({ id }: { id: string }) {
             {scribbles.titles[i]}
           </a>
           <br />
-        </>
+        </li>
       );
     }
-    return <div>{rows}</div>;
+    return <ul>{rows}</ul>;
   }
 }
 
 export default function Dashboard() {
-  const [loading, setLoading] = useState<boolean>(true);
-  const [authenticated, setAuthenticated] = useState<boolean>(false);
   const [userId, setUserId] = useState<string | null>(null);
-  let navigate = useNavigate();
 
-  const checkSession = async () => {
-    if (loading) {
-      try {
-        const { data } = await authClient.getSession();
-        if (data != null) {
-          setAuthenticated(true);
-          setUserId(data.user.id);
-        } else {
-          setAuthenticated(false);
-          navigate("/signin", { state: { redirect: "/dashboard" } });
-        }
-      } catch (error) {
-        console.error("Error checking session:", error);
-        setAuthenticated(false);
-        navigate("/signin", { state: { redirect: "/dashboard" } });
-      } finally {
-        setLoading(false);
-      }
-    }
-  };
-
-  useEffect(() => {
-    checkSession();
-  });
-
-  if (loading) {
-    return <div />;
-  }
-
-  if (authenticated) {
-    return (
+  return (
+    <ProtectedRoute redirect="/dashboard" setUserId={setUserId}>
       <div id="dashboard">
         <Header actionlink={false} />
         <h1>Dashboard</h1>
@@ -108,15 +76,6 @@ export default function Dashboard() {
         {<ListScribbles id={userId || ""} />}
         <a href="/newscribble">New Scribble</a>
       </div>
-    );
-  } else {
-    return (
-      <div>
-        <p>Redirecting...</p>
-        <p>
-          If you are not redirected, click <a href="/signin">here</a>.
-        </p>
-      </div>
-    );
-  }
+    </ProtectedRoute>
+  );
 }

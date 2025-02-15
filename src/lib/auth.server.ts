@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import pkg from "pg";
-import fs from "node:fs";
+// import fs from "node:fs";
 
 const { Pool } = pkg;
 

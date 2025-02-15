@@ -23,19 +23,19 @@ import {
 import "@mdxeditor/editor/style.css";
 import Header from "../components/Header";
 import "../assets/css/Scribbles.css";
-import React from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router";
-import { authClient } from "../lib/auth.client";
 import useKeyPress from "../utils/useKeyPress";
+import { authClient } from "../lib/auth.client";
 import * as utils from "../utils/ScribblesUtils";
 
 export const meta = utils.meta;
 
 export default function Scribbles() {
-  const [loading, setLoading] = React.useState(true);
-  const [authenticated, setAuthenticated] = React.useState(false);
+  const [loading, setLoading] = useState(true);
+  const [authenticated, setAuthenticated] = useState(false);
   let file: string, user: string;
-  const codeRef = React.useRef<MDXEditorMethods>(null);
+  const codeRef = useRef<MDXEditorMethods>(null);
   const { state } = useLocation();
   let navigate = useNavigate();
 
@@ -85,7 +85,7 @@ export default function Scribbles() {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     checkSession();
     return () => {
       document.removeEventListener("beforeunload", saveCallback);
@@ -122,7 +122,7 @@ export default function Scribbles() {
     <MDXEditor
       ref={codeRef}
       className="dark-editor"
-      markdown={authenticated ? codeRef.current?.getMarkdown() : ""}
+      markdown={authenticated ? codeRef.current?.getMarkdown() || "" : ""}
       plugins={[
         headingsPlugin(),
         quotePlugin(),
