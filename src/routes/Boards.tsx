@@ -1,4 +1,4 @@
-import ProtectedRoute from "../components/ProtectedRoute";
+import ProtectedRoute from "../utils/ProtectedRoute";
 import React from "react";
 
 export default function Boards() {
