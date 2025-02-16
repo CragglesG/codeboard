@@ -154,7 +154,11 @@ export default function Scribbles() {
           toolbarClassName: "toolbar",
           toolbarContents: () => (
             <>
-              <Header className="header" extraItem={<KitchenSinkToolbar />} />
+              <Header
+                className="header"
+                actionLink={false}
+                extraItem={<KitchenSinkToolbar />}
+              />
             </>
           ),
         }),

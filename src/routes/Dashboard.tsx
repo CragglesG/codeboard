@@ -70,7 +70,7 @@ export default function Dashboard() {
   return (
     <ProtectedRoute redirect="/dashboard" setUserId={setUserId}>
       <div id="dashboard">
-        <Header actionlink={false} />
+        <Header actionLink={false} />
         <h1>Dashboard</h1>
         <h2>Scribbles</h2>
         {<ListScribbles id={userId || ""} />}

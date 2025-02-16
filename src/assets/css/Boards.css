@@ -1,0 +1,23 @@
+.boards-page {
+  position: relative;
+}
+
+.react-flow {
+  position: absolute !important;
+  width: 100vw;
+  height: 90vh;
+  left: 0;
+  bottom: 0;
+}
+
+div {
+  color: black;
+}
+
+.react-flow-div {
+  width: 100vw;
+  height: 90vh;
+  left: 0;
+  bottom: 0;
+  position: absolute;
+}
