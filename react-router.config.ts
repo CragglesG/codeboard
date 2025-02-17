@@ -9,6 +9,7 @@ export default {
       "/",
       "/dashboard",
       "/scribbles",
+      "/boards",
       "/signin",
       "/signup",
       "/newscribble",

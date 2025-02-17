@@ -1,9 +1,9 @@
-import { authClient } from "../lib/auth.client";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import Header from "../components/Header";
-import ProtectedRoute from "../utils/ProtectedRoute";
 import "../assets/css/Dashboard.css";
+import Header from "../components/Header";
+import { authClient } from "../lib/auth.client";
+import ProtectedRoute from "../utils/ProtectedRoute";
 
 export function meta() {
   return [
@@ -75,6 +75,8 @@ export default function Dashboard() {
         <h2>Scribbles</h2>
         {<ListScribbles id={userId || ""} />}
         <a href="/newscribble">New Scribble</a>
+        <h2>Boards</h2>
+        <a href="/boards">Try out Boards in alpha</a>
       </div>
     </ProtectedRoute>
   );

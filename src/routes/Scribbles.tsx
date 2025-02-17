@@ -21,13 +21,13 @@ import {
   type MDXEditorMethods,
 } from "@mdxeditor/editor";
 import "@mdxeditor/editor/style.css";
-import Header from "../components/Header";
-import "../assets/css/Scribbles.css";
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
-import useKeyPress from "../utils/useKeyPress";
+import "../assets/css/Scribbles.css";
+import Header from "../components/Header";
 import { authClient } from "../lib/auth.client";
 import * as utils from "../utils/ScribblesUtils";
+import useKeyPress from "../utils/useKeyPress";
 
 export const meta = utils.meta;
 
@@ -154,11 +154,9 @@ export default function Scribbles() {
           toolbarClassName: "toolbar",
           toolbarContents: () => (
             <>
-              <Header
-                className="header"
-                actionLink={false}
-                extraItem={<KitchenSinkToolbar />}
-              />
+              <Header className="header" actionLink={false}>
+                <KitchenSinkToolbar />
+              </Header>
             </>
           ),
         }),

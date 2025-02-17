@@ -21,3 +21,36 @@ div {
   bottom: 0;
   position: absolute;
 }
+
+.basic-node {
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  text-align: center;
+}
+
+.header-button {
+  color: #ffffff;
+}
+
+.textbox-popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  text-align: center;
+}
+
+.textbox-popup button {
+  margin-top: 8px;
+  color: #ffffff;
+}
+
+.textbox-popup input {
+  margin-top: 8px;
+}

@@ -33,15 +33,13 @@ function ActionLink() {
   }
 }
 
-export default function Header({ extraItem = <div />, actionLink = true }) {
-  Header.propTypes = {
-    extraItem: PropTypes.oneOfType([
-      PropTypes.element,
-      PropTypes.arrayOf(PropTypes.element),
-    ]),
-    actionLink: PropTypes.bool,
-  };
-
+export default function Header({
+  children,
+  actionLink = true,
+}: {
+  children: React.ReactNode;
+  actionLink?: boolean;
+}) {
   const { pathname } = useLocation();
 
   return (
@@ -55,7 +53,7 @@ export default function Header({ extraItem = <div />, actionLink = true }) {
           Codeboard
         </a>
       )}
-      {extraItem}
+      {children}
       <nav className="nav">{actionLink ? <ActionLink /> : null}</nav>
     </header>
   );

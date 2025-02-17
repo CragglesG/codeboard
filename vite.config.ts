@@ -14,7 +14,7 @@ export default defineConfig(({ command }) => ({
     sourcemap: false,
   },
   ssr: {
-    noExternal: command === "build" ? true : undefined,
+    noExternal: command === "build" ? true : [/^@xyflow/],
   },
   plugins: [
     reactRouter(),
