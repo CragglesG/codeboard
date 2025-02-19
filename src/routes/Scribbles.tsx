@@ -37,7 +37,7 @@ export default function Scribbles() {
   let file: string, user: string;
   const codeRef = useRef<MDXEditorMethods>(null);
   const { state } = useLocation();
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   const setMarkdown = async () => {
     const md = await fetch(
@@ -64,7 +64,8 @@ export default function Scribbles() {
         const { data } = await authClient.getSession();
         if (data != null) {
           setAuthenticated(true);
-          ({ file, user } = state);
+          ({ file } = state);
+          user = data.user.id;
           navigate(".", { state: { file: file, user: user } });
           setMarkdown();
           document.addEventListener("beforeunload", saveCallback);

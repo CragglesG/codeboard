@@ -1,17 +1,17 @@
 import { authClient } from "../lib/auth.client";
-import React from "react";
+import { useState, useEffect } from "react";
 import { Form, useNavigate, useLocation } from "react-router";
 import { makeid } from "../utils/ScribblesUtils";
 import "../assets/css/forms.css";
 
 export default function NewScribble() {
-  const [loading, setLoading] = React.useState(true);
-  const [authenticated, setAuthenticated] = React.useState(false);
-  const [file, setFile] = React.useState("");
-  const [user, setUser] = React.useState("");
+  const [loading, setLoading] = useState<boolean>(true);
+  const [authenticated, setAuthenticated] = useState<boolean>(false);
+  const [file, setFile] = useState<string>("");
+  const [user, setUser] = useState<string>("");
   let navigate = useNavigate();
   let { state } = useLocation();
-  const [title, setTitle] = React.useState("");
+  const [title, setTitle] = useState<string>("");
 
   const checkSession = async () => {
     if (loading) {
@@ -39,7 +39,7 @@ export default function NewScribble() {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     checkSession();
   });
 

@@ -1,4 +1,3 @@
-// src/components/Header.jsx
 import "../assets/css/Header.css";
 import PropTypes from "prop-types";
 import { authClient } from "../lib/auth.client";
@@ -37,7 +36,7 @@ export default function Header({
   children,
   actionLink = true,
 }: {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   actionLink?: boolean;
 }) {
   const { pathname } = useLocation();
