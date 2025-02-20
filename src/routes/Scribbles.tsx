@@ -21,13 +21,13 @@ import {
   type MDXEditorMethods,
 } from "@mdxeditor/editor";
 import "@mdxeditor/editor/style.css";
-import Header from "../components/Header";
-import "../assets/css/Scribbles.css";
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
-import useKeyPress from "../utils/useKeyPress";
+import "../assets/css/Scribbles.css";
+import Header from "../components/Header";
 import { authClient } from "../lib/auth.client";
 import * as utils from "../utils/ScribblesUtils";
+import useKeyPress from "../utils/useKeyPress";
 
 export const meta = utils.meta;
 
@@ -37,7 +37,7 @@ export default function Scribbles() {
   let file: string, user: string;
   const codeRef = useRef<MDXEditorMethods>(null);
   const { state } = useLocation();
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   const setMarkdown = async () => {
     const md = await fetch(
@@ -64,7 +64,8 @@ export default function Scribbles() {
         const { data } = await authClient.getSession();
         if (data != null) {
           setAuthenticated(true);
-          ({ file, user } = state);
+          ({ file } = state);
+          user = data.user.id;
           navigate(".", { state: { file: file, user: user } });
           setMarkdown();
           document.addEventListener("beforeunload", saveCallback);
@@ -154,7 +155,9 @@ export default function Scribbles() {
           toolbarClassName: "toolbar",
           toolbarContents: () => (
             <>
-              <Header className="header" extraItem={<KitchenSinkToolbar />} />
+              <Header className="header" actionLink={false}>
+                <KitchenSinkToolbar />
+              </Header>
             </>
           ),
         }),

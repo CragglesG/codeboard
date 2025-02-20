@@ -1,4 +1,3 @@
-/* src/components/HeroSection.css */
 .hero {
   display: flex;
   justify-content: center;
@@ -14,7 +13,6 @@
 }
 
 .hero h1 {
-  /* font-size: 3rem; */
   margin-bottom: 20px;
 }
 

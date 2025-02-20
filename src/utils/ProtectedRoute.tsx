@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { authClient } from "../lib/auth.client";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 export default function ProtectedRoute({
   children,
@@ -10,12 +10,13 @@ export default function ProtectedRoute({
 }: {
   children: React.ReactNode;
   redirect: string;
-  setUserId?: React.Dispatch<React.SetStateAction<string | null>>;
+  setUserId?: React.Dispatch<React.SetStateAction<string>>;
   navigateState?: any;
 }) {
   const [loading, setLoading] = useState<boolean>(true);
   const [authenticated, setAuthenticated] = useState<boolean>(false);
   let navigate = useNavigate();
+  const { state } = useLocation();
 
   const checkSession = async () => {
     if (loading) {

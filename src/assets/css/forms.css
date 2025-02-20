@@ -2,6 +2,8 @@ input {
   margin: -1rem auto 1rem auto;
   padding: 0.75rem;
   height: 0.75rem;
+  border: 1px solid lightslategray;
+  border-radius: 4px;
 }
 
 div {
@@ -13,8 +15,10 @@ div {
 }
 
 div h2,
+h3,
 p,
-form {
+form,
+li {
   margin: auto;
   text-align: center;
 }

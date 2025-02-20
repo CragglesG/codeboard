@@ -1,8 +1,8 @@
-// src/components/Header.jsx
 import "../assets/css/Header.css";
 import PropTypes from "prop-types";
 import { authClient } from "../lib/auth.client";
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router";
 
 function ActionLink() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -32,22 +32,28 @@ function ActionLink() {
   }
 }
 
-export default function Header({ extraItem = <div />, actionlink = true }) {
-  Header.propTypes = {
-    extraItem: PropTypes.oneOfType([
-      PropTypes.element,
-      PropTypes.arrayOf(PropTypes.element),
-    ]),
-    actionlink: PropTypes.bool,
-  };
+export default function Header({
+  children,
+  actionLink = true,
+}: {
+  children?: React.ReactNode;
+  actionLink?: boolean;
+}) {
+  const { pathname } = useLocation();
 
   return (
     <header className="header">
-      <a className="logo" href="/">
-        Codeboard
-      </a>
-      {extraItem}
-      <nav className="nav">{actionlink ? <ActionLink /> : null}</nav>
+      {pathname === "/" || pathname === "/dashboard" ? (
+        <a className="logo" href="/">
+          Codeboard
+        </a>
+      ) : (
+        <a className="logo" href="/dashboard">
+          Codeboard
+        </a>
+      )}
+      {children}
+      <nav className="nav">{actionLink ? <ActionLink /> : null}</nav>
     </header>
   );
 }
