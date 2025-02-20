@@ -6,11 +6,9 @@ import "../assets/css/forms.css";
 
 export function ListScribbles({
   id,
-  setTitle,
   submit,
 }: {
   id: string;
-  setTitle: React.Dispatch<React.SetStateAction<string>>;
   submit: (title?: string) => Promise<void>;
 }) {
   const [loading, setLoading] = useState(true);
@@ -90,34 +88,36 @@ export default function NewBoard() {
 
   return (
     <ProtectedRoute redirect="/signin" setUserId={setUserId}>
-      <h2>Create A New Board</h2>
-      <h3>Convert A Scribble (the scribble will remain intact):</h3>
-      {
-        <ListScribbles
-          id={userId || ""}
-          setTitle={setTitle}
-          submit={createBoard}
-        />
-      }
-      <h3>Create A Board From Scratch:</h3>
-      <Form
-        onSubmit={(e) => {
-          e.preventDefault();
-          createBoard();
-        }}
-      >
-        <input
-          type="text"
-          name="title"
-          placeholder="Title"
-          className="top-input"
-          onChange={(e) => {
-            setTitle(e.target.value);
+      <div>
+        <h2>Create A New Board</h2>
+        <h3>Create From Scribble:</h3>
+        {
+          <ListScribbles
+            id={userId || ""}
+            setTitle={setTitle}
+            submit={createBoard}
+          />
+        }
+        <h3>Create From Scratch:</h3>
+        <Form
+          onSubmit={(e) => {
+            e.preventDefault();
+            createBoard();
           }}
-        />
-        <br />
-        <button type="submit">Create</button>
-      </Form>
+        >
+          <input
+            type="text"
+            name="title"
+            placeholder="Title"
+            className="top-input"
+            onChange={(e) => {
+              setTitle(e.target.value);
+            }}
+          />
+          <br />
+          <button type="submit">Create</button>
+        </Form>
+      </div>
     </ProtectedRoute>
   );
 }
