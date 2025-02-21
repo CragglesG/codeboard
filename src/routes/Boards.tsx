@@ -13,60 +13,14 @@ import ProtectedRoute from "../utils/ProtectedRoute";
 import TextBoxPopup from "../components/TextBoxPopup";
 import { useLocation } from "react-router";
 import useKeyPress from "../utils/useKeyPress";
-
-const defaultNodes = [
-  {
-    id: "1",
-    position: { x: 0, y: 0 },
-    data: {
-      label:
-        "Something went wrong. Please try again later, and if the issue persists, please contact support.",
-    },
-    type: "basic",
-  },
-];
-
-function BasicNode({ data }: { data: { label: string } }) {
-  return <div className="basic-node">{data.label}</div>;
-}
-
-// TODO: Implement a dropdown node for selecting a programming language
-
-function HeaderControls({
-  nodes,
-  setNodes,
-  setShowPopup,
-}: {
-  nodes: Node[];
-  setNodes: React.Dispatch<React.SetStateAction<Node[]>>;
-  setShowPopup: React.Dispatch<boolean>;
-}) {
-  return (
-    <div className="header-controls">
-      <button className="header-button" onClick={() => setShowPopup(true)}>
-        Add Text Node
-      </button>
-    </div>
-  );
-}
-
-function textBtnClick(
-  nodes: Node[],
-  setNodes: React.Dispatch<React.SetStateAction<Node[]>>,
-  setShowPopup: React.Dispatch<boolean>,
-  text: string
-) {
-  setNodes([
-    ...nodes,
-    {
-      id: `${nodes.length + 1}`,
-      position: { x: 0, y: 0 },
-      data: { label: text },
-      type: "basic",
-    },
-  ]);
-  setShowPopup(false);
-}
+import {
+  HeaderControls,
+  textBtnClick,
+  defaultNodes,
+  BasicNode,
+  DropdownNode,
+} from "../utils/BoardsUtils";
+import { changeWith } from "@mdxeditor/editor";
 
 export default function Boards() {
   const [nodes, setNodes] = useState<Node[]>(defaultNodes);
@@ -81,9 +35,27 @@ export default function Boards() {
   const nodeTypes = useMemo(
     () => ({
       basic: BasicNode,
+      dropdown: DropdownNode,
     }),
     []
   );
+
+  const changeLanguage = useCallback((language: string) => {
+    setNodes(
+      nodes.map((node) =>
+        node.type === "dropdown"
+          ? {
+              ...node,
+              data: {
+                ...node.data,
+                selectedLanguage: language,
+                changeLanguage,
+              },
+            }
+          : node
+      )
+    );
+  }, []);
 
   const getFile = async () => {
     if (state.file && userId != "") {
@@ -95,8 +67,29 @@ export default function Boards() {
       );
       if (data.ok) {
         const json = await data.text();
-        if (json && json != "{}") {
-          setNodes(JSON.parse(json));
+        let parsedJson = JSON.parse(json);
+        if (parsedJson && json != "{}") {
+          parsedJson = parsedJson.map((node: Node) =>
+            node.type === "dropdown"
+              ? { ...node, data: { ...node.data, changeLanguage } }
+              : node
+          );
+          setNodes(parsedJson);
+        } else {
+          const nodes = [
+            ...defaultNodes,
+            {
+              id: "2",
+              position: { x: 50, y: 50 },
+              data: {
+                selectedLanguage: "JavaScript",
+                recommendedLanguage: "JavaScript",
+                changeLanguage: changeLanguage,
+              },
+              type: "dropdown",
+            },
+          ];
+          setNodes(nodes);
         }
       }
     }

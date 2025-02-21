@@ -22,8 +22,6 @@ export async function loader({ request }: Route.LoaderArgs) {
   const file = query.get("file") as string;
   const user = query.get("user") as string;
 
-  console.log({ user: user, file: file });
-
   const data = await fetch(
     `${process.env.BLOB_PUBLIC_URL}/boards/${user}/${file}`
   );

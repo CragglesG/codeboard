@@ -75,6 +75,15 @@ export default function NewBoard() {
           data: { label: titleArg ? titleArg : title },
           type: "basic",
         },
+        {
+          id: "2",
+          position: { x: 50, y: 50 },
+          data: {
+            selectedLanguage: "JavaScript",
+            recommendedLanguage: "JavaScript",
+          },
+          type: "dropdown",
+        },
       ])
     );
     formData.append("user", userId);
