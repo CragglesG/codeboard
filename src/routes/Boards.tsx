@@ -21,30 +21,65 @@ import TextBoxPopup from "../components/TextBoxPopup";
 import {
   BasicNode,
   defaultNodes,
-  DropdownNode,
+  allFrameworks,
+  LanguageDropdownNode,
+  FrameworkDropdownNode,
   HeaderControls,
   textBtnClick,
 } from "../utils/BoardsUtils";
 import ProtectedRoute from "../utils/ProtectedRoute";
 import useKeyPress from "../utils/useKeyPress";
-import ChangeLanguage from "../utils/ChangeLanguage";
+import {
+  CurrentLanguage,
+  ChangeLanguage,
+  ChangeFramework,
+} from "../utils/BoardsContexts";
 
 export default function Boards() {
   const [nodes, setNodes] = useState<Node[]>(defaultNodes);
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>("");
+  const [language, setLanguage] = useState<string>("JavaScript");
   const { state } = useLocation();
 
   const changeLanguage = useCallback(
-    (language: string) => {
+    (newLanguage: string) => {
+      setLanguage(newLanguage);
       setNodes(
         nodes.map((node) =>
-          node.type === "dropdown"
+          node.type === "languageDropdown"
             ? {
                 ...node,
                 data: {
                   ...node.data,
-                  selectedLanguage: language,
+                  selectedLanguage: newLanguage,
+                },
+              }
+            : node.type === "frameworkDropdown"
+            ? {
+                ...node,
+                data: {
+                  ...node.data,
+                  selectedFramework: allFrameworks[newLanguage][0],
+                },
+              }
+            : node
+        )
+      );
+    },
+    [nodes]
+  );
+
+  const changeFramework = useCallback(
+    (framework: string) => {
+      setNodes(
+        nodes.map((node) =>
+          node.type === "frameworkDropdown"
+            ? {
+                ...node,
+                data: {
+                  ...node.data,
+                  selectedFramework: framework,
                 },
               }
             : node
@@ -61,7 +96,8 @@ export default function Boards() {
   const nodeTypes = useMemo(
     () => ({
       basic: BasicNode,
-      dropdown: DropdownNode,
+      languageDropdown: LanguageDropdownNode,
+      frameworkDropdown: FrameworkDropdownNode,
     }),
     []
   );
@@ -75,23 +111,11 @@ export default function Boards() {
       );
       if (data.ok) {
         const json = await data.text();
-        let parsedJson = JSON.parse(json);
+        const parsedJson = JSON.parse(json);
         if (parsedJson && json != "{}") {
           setNodes(parsedJson);
         } else {
-          const nodes = [
-            ...defaultNodes,
-            {
-              id: "2",
-              position: { x: 50, y: 50 },
-              data: {
-                selectedLanguage: "JavaScript",
-                recommendedLanguage: "JavaScript",
-              },
-              type: "dropdown",
-            },
-          ];
-          setNodes(nodes);
+          setNodes(defaultNodes);
         }
       }
     }
@@ -150,19 +174,23 @@ export default function Boards() {
           setShowPopup={setShowPopup}
         />
       </Header>
-      <ChangeLanguage.Provider value={changeLanguage}>
-        <div className="react-flow-div">
-          <ReactFlow
-            className="react-flow"
-            nodes={nodes}
-            onNodesChange={onNodesChange}
-            nodeTypes={nodeTypes}
-            proOptions={{ hideAttribution: true }}
-          >
-            <Controls />
-          </ReactFlow>
-        </div>
-      </ChangeLanguage.Provider>
+      <CurrentLanguage.Provider value={language}>
+        <ChangeLanguage.Provider value={changeLanguage}>
+          <ChangeFramework.Provider value={changeFramework}>
+            <div className="react-flow-div">
+              <ReactFlow
+                className="react-flow"
+                nodes={nodes}
+                onNodesChange={onNodesChange}
+                nodeTypes={nodeTypes}
+                proOptions={{ hideAttribution: true }}
+              >
+                <Controls />
+              </ReactFlow>
+            </div>
+          </ChangeFramework.Provider>
+        </ChangeLanguage.Provider>
+      </CurrentLanguage.Provider>
       {showPopup && (
         <TextBoxPopup
           optionalMessage="Enter text to be shown on this node:"

@@ -82,7 +82,16 @@ export default function NewBoard() {
             selectedLanguage: "JavaScript",
             recommendedLanguage: "JavaScript",
           },
-          type: "dropdown",
+          type: "languageDropdown",
+        },
+        {
+          id: "3",
+          position: { x: 100, y: 100 },
+          data: {
+            selectedFramework: "React",
+            recommendedFramework: "React",
+          },
+          type: "frameworkDropdown",
         },
       ])
     );

@@ -4,8 +4,9 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useRouteError,
+  isRouteErrorResponse,
 } from "react-router";
+import { Route } from "./+types/root";
 import React from "react";
 import "./assets/css/global.css";
 import { Analytics } from "@vercel/analytics/react";
@@ -35,32 +36,31 @@ export default function Root() {
   return <Outlet />;
 }
 
-export function ErrorBoundary() {
-  const error = useRouteError();
-  console.log(error);
-  return (
-    <html>
-      <head>
-        <title>Oh no!</title>
-        <Meta />
-        <Links />
-      </head>
-      <body
-        style={{
-          display: "block",
-          margin: "auto auto",
-          verticalAlign: "middle",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <h1>Oh no!</h1>
+export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+  if (isRouteErrorResponse(error)) {
+    return (
+      <div style={{ color: "white", textAlign: "center" }}>
+        <h1>
+          {error.status} {error.statusText}
+        </h1>
+        <br />
+        <p>{error.data}</p>
+      </div>
+    );
+  } else if (error instanceof Error) {
+    return (
+      <div style={{ color: "white", textAlign: "center" }}>
+        <h1>Unexpected Error</h1>
+        <br />
         <p>
-          It looks like something went wrong. The error has been reported to our
-          team.
+          Oops! Something went wrong. Please try again later, and if the error
+          persists, please contact support.
         </p>
-        <Scripts />
-      </body>
-    </html>
-  );
+      </div>
+    );
+  } else {
+    return (
+      <h1 style={{ color: "white", textAlign: "center" }}>Unknown Error</h1>
+    );
+  }
 }
