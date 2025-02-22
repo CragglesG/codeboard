@@ -6,27 +6,53 @@ import {
   type OnNodesChange,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import React, { useCallback, useMemo, useState, useEffect } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import { useLocation } from "react-router";
 import "../assets/css/Boards.css";
 import Header from "../components/Header";
-import ProtectedRoute from "../utils/ProtectedRoute";
 import TextBoxPopup from "../components/TextBoxPopup";
-import { useLocation } from "react-router";
-import useKeyPress from "../utils/useKeyPress";
 import {
+  BasicNode,
+  defaultNodes,
+  DropdownNode,
   HeaderControls,
   textBtnClick,
-  defaultNodes,
-  BasicNode,
-  DropdownNode,
 } from "../utils/BoardsUtils";
-import { changeWith } from "@mdxeditor/editor";
+import ProtectedRoute from "../utils/ProtectedRoute";
+import useKeyPress from "../utils/useKeyPress";
+import ChangeLanguage from "../utils/ChangeLanguage";
 
 export default function Boards() {
   const [nodes, setNodes] = useState<Node[]>(defaultNodes);
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>("");
   const { state } = useLocation();
+
+  const changeLanguage = useCallback(
+    (language: string) => {
+      setNodes(
+        nodes.map((node) =>
+          node.type === "dropdown"
+            ? {
+                ...node,
+                data: {
+                  ...node.data,
+                  selectedLanguage: language,
+                },
+              }
+            : node
+        )
+      );
+    },
+    [nodes]
+  );
 
   const onNodesChange: OnNodesChange = useCallback((changes: any) => {
     setNodes((nds: any) => applyNodeChanges(changes, nds));
@@ -40,26 +66,8 @@ export default function Boards() {
     []
   );
 
-  const changeLanguage = useCallback((language: string) => {
-    setNodes(
-      nodes.map((node) =>
-        node.type === "dropdown"
-          ? {
-              ...node,
-              data: {
-                ...node.data,
-                selectedLanguage: language,
-                changeLanguage,
-              },
-            }
-          : node
-      )
-    );
-  }, []);
-
   const getFile = async () => {
     if (state.file && userId != "") {
-      const formData = new FormData();
       const data = await fetch(
         `${import.meta.env.VITE_PROJECT_URL}/api/boards?file=${
           state.file
@@ -69,11 +77,6 @@ export default function Boards() {
         const json = await data.text();
         let parsedJson = JSON.parse(json);
         if (parsedJson && json != "{}") {
-          parsedJson = parsedJson.map((node: Node) =>
-            node.type === "dropdown"
-              ? { ...node, data: { ...node.data, changeLanguage } }
-              : node
-          );
           setNodes(parsedJson);
         } else {
           const nodes = [
@@ -84,7 +87,6 @@ export default function Boards() {
               data: {
                 selectedLanguage: "JavaScript",
                 recommendedLanguage: "JavaScript",
-                changeLanguage: changeLanguage,
               },
               type: "dropdown",
             },
@@ -99,10 +101,9 @@ export default function Boards() {
     getFile();
   }, [userId]);
 
-  let lastNodes = nodes;
-
-  const saveFile = async () => {
-    if (nodes != lastNodes) {
+  const saveFile = useCallback(
+    async (e?: any) => {
+      e?.preventDefault();
       if (userId && state.file) {
         const formData = new FormData();
         formData.append("user", userId);
@@ -113,27 +114,27 @@ export default function Boards() {
           body: formData,
         });
       }
-      lastNodes = nodes;
-    }
-  };
-
-  const saveCallback = (e) => {
-    e.preventDefault();
-    saveFile();
-  };
+    },
+    [nodes]
+  );
 
   useEffect(() => {
-    document.addEventListener("beforeunload", saveCallback);
-    document.addEventListener("pagehide", saveCallback);
-    document.addEventListener("visibilitychange", saveCallback);
+    document.addEventListener("beforeunload", saveFile);
+    document.addEventListener("pagehide", saveFile);
+    document.addEventListener("visibilitychange", saveFile);
     return () => {
-      document.removeEventListener("beforeunload", saveCallback);
-      document.removeEventListener("pagehide", saveCallback);
-      document.removeEventListener("visibilitychange", saveCallback);
+      document.removeEventListener("beforeunload", saveFile);
+      document.removeEventListener("pagehide", saveFile);
+      document.removeEventListener("visibilitychange", saveFile);
     };
   });
 
-  useKeyPress(["s"], saveCallback, null, true);
+  useKeyPress(["s"], saveFile, null, true);
+
+  useEffect(() => {
+    const saveInterval = setInterval(saveFile, 10000);
+    return () => clearInterval(saveInterval);
+  }, [saveFile]);
 
   return (
     <ProtectedRoute
@@ -149,17 +150,19 @@ export default function Boards() {
           setShowPopup={setShowPopup}
         />
       </Header>
-      <div className="react-flow-div">
-        <ReactFlow
-          className="react-flow"
-          nodes={nodes}
-          onNodesChange={onNodesChange}
-          nodeTypes={nodeTypes}
-          proOptions={{ hideAttribution: true }}
-        >
-          <Controls />
-        </ReactFlow>
-      </div>
+      <ChangeLanguage.Provider value={changeLanguage}>
+        <div className="react-flow-div">
+          <ReactFlow
+            className="react-flow"
+            nodes={nodes}
+            onNodesChange={onNodesChange}
+            nodeTypes={nodeTypes}
+            proOptions={{ hideAttribution: true }}
+          >
+            <Controls />
+          </ReactFlow>
+        </div>
+      </ChangeLanguage.Provider>
       {showPopup && (
         <TextBoxPopup
           optionalMessage="Enter text to be shown on this node:"

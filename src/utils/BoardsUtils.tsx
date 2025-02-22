@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { type Node } from "@xyflow/react";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import ChangeLanguage from "./ChangeLanguage";
 
 const languages = ["JavaScript", "TypeScript", "Python", "Rust", "C++"];
 
@@ -26,9 +27,9 @@ export function DropdownNode({
   data: {
     selectedLanguage: string;
     recommendedLanguage: string;
-    changeLanguage: (language: string) => void;
   };
 }) {
+  const changeLanguage = useContext(ChangeLanguage);
   let languageId = 0;
   return (
     <Menu as="div" className="relative inline-block text-left">
@@ -50,7 +51,7 @@ export function DropdownNode({
           {languages.map((language) => (
             <MenuItem key={languageId++}>
               <a
-                onClick={() => data.changeLanguage(language)}
+                onClick={() => changeLanguage(language)}
                 className="menu-link block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden"
               >
                 {language}
