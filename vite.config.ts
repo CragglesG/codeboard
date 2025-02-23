@@ -4,6 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import babel from "vite-plugin-babel";
+import path from "path";
 
 const ReactCompilerConfig = {
   target: "19",
@@ -14,7 +15,18 @@ export default defineConfig(({ command }) => ({
     sourcemap: false,
   },
   ssr: {
-    noExternal: command === "build" ? true : [/^@xyflow/],
+    noExternal: command === "build" ? true : [/^@xyflow/, /^radix-ui/],
+  },
+  compilerOptions: {
+    baseUrl: ".",
+    paths: {
+      "@/*": ["./src/*"],
+    },
+  },
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
   },
   plugins: [
     reactRouter(),

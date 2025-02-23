@@ -3,6 +3,7 @@ import { useState } from "react";
 import { authClient } from "../lib/auth.client";
 import React from "react";
 import "../assets/css/forms.css";
+import { Input } from "@/components/ui/input";
 
 export function meta() {
   return [
@@ -58,20 +59,20 @@ export default function SignUp() {
         onSubmit={signUp}
         style={{ width: "13rem", marginBottom: "0.5rem" }}
       >
-        <input
+        <Input
           className="top-input"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Name"
         />
-        <input
+        <Input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Email"
         />
-        <input
+        <Input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}

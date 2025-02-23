@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   align-content: center;
-  background-color: #282c34;
+  background-color: #1a1a1a;
   color: white;
   top: 1rem;
   width: 90%;
@@ -45,4 +45,8 @@
 
 .nav a:hover {
   text-decoration: underline;
+}
+
+.mode-toggle {
+  border-radius: 75%;
 }

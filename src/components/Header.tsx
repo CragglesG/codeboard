@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { authClient } from "../lib/auth.client";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router";
+import ModeToggle from "./ModeToggle";
 
 function ActionLink() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -54,6 +55,7 @@ export default function Header({
       )}
       {children}
       <nav className="nav">{actionLink ? <ActionLink /> : null}</nav>
+      <ModeToggle className="mode-toggle" />
     </header>
   );
 }

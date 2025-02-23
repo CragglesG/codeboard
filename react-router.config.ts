@@ -13,6 +13,7 @@ export default {
       "/signin",
       "/signup",
       "/newscribble",
+      "/newboard",
     ];
   },
   presets: [vercelPreset()],

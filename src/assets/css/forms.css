@@ -1,9 +1,9 @@
 input {
   margin: -1rem auto 1rem auto;
   padding: 0.75rem;
-  height: 0.75rem;
-  border: 1px solid lightslategray;
-  border-radius: 4px;
+  /* height: 0.75rem; */
+  /* border: 1px solid lightslategray;
+  border-radius: 4px; */
 }
 
 div {
@@ -24,5 +24,5 @@ li {
 }
 
 .top-input {
-  margin-top: 1rem;
+  margin: 0.5rem auto 2rem auto;
 }

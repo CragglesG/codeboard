@@ -6,14 +6,7 @@ import {
   type OnNodesChange,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router";
 import "../assets/css/Boards.css";
 import Header from "../components/Header";
@@ -113,9 +106,53 @@ export default function Boards() {
         const json = await data.text();
         const parsedJson = JSON.parse(json);
         if (parsedJson && json != "{}") {
-          setNodes(parsedJson);
+          const nodes = [];
+          const dims = { width: window.innerWidth, height: window.innerHeight };
+          for (let i = 0; i < parsedJson.length; i++) {
+            const node = parsedJson[i];
+            if (
+              node.type === "basic" &&
+              node.position.x === 0 &&
+              node.position.y === 0
+            ) {
+              node.position.x = dims.width / 2;
+              node.position.y = (dims.height * 0.9) / 2;
+            } else if (
+              node.type === "languageDropdown" &&
+              node.position.x === 50 &&
+              node.position.y === 50
+            ) {
+              node.position.x = dims.width / 2 - 100;
+              node.position.y = 100;
+            } else if (
+              node.type === "frameworkDropdown" &&
+              node.position.x === 100 &&
+              node.position.y === 100
+            ) {
+              node.position.x = dims.width / 2 + 100;
+              node.position.y = 100;
+            }
+            nodes.push(node);
+          }
+          setNodes(nodes);
         } else {
-          setNodes(defaultNodes);
+          const nodes = [];
+          const dims = { width: window.innerWidth, height: window.innerHeight };
+          for (let i = 0; i < defaultNodes.length; i++) {
+            const node = defaultNodes[i];
+            if (node.type === "basic") {
+              node.position.x = dims.width / 2;
+              node.position.y = (dims.height * 0.9) / 2;
+            } else if (node.type === "languageDropdown") {
+              node.position.x = dims.width / 2 - 100;
+              node.position.y = 100;
+            } else if (node.type === "frameworkDropdown") {
+              node.position.x = dims.width / 2 + 100;
+              node.position.y = 100;
+            }
+            nodes.push(node);
+          }
+          setNodes(nodes);
         }
       }
     }

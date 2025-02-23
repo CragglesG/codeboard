@@ -11,6 +11,7 @@ import React from "react";
 import "./assets/css/global.css";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import ThemeProvider from "./components/ThemeProvider";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -22,7 +23,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <ThemeProvider defaultTheme="dark" storageKey="theme">
+          {children}
+        </ThemeProvider>
         <ScrollRestoration />
         <Scripts />
         <Analytics />
