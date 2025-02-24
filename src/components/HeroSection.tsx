@@ -29,9 +29,9 @@ function HeroSection() {
     <section className="hero">
       <div className="hero-content">
         <h1>Develop faster.</h1>
-        <p className={"mb-5"}>Let your ideas come to life.</p>
+        <p className="mb-5">Let your ideas come to life.</p>
         <button
-          className="hero-button"
+          className="hero-button rounded-md"
           onClick={async (e) => {
             e.preventDefault();
             if (authenticated) {
