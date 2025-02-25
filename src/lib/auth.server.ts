@@ -26,7 +26,4 @@ export const auth = betterAuth({
       allowDifferentEmails: true,
     },
   },
-  advanced: {
-    generateId: false,
-  },
 });
