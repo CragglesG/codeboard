@@ -1,32 +1,32 @@
-@import url("@radix-ui/colors/tomato-dark.css");
-@import url("@radix-ui/colors/mauve-dark.css");
+@import url("@radix-ui/colors/blue-dark.css");
+@import url("@radix-ui/colors/gray-dark.css");
 
 .dark-editor {
-  --accentBase: --color-blue-1;
-  --accentBgSubtle: var(--tomato-2);
-  --accentBg: var(--tomato-3);
-  --accentBgHover: var(--tomato-4);
-  --accentBgActive: var(--tomato-5);
-  --accentLine: var(--tomato-6);
-  --accentBorder: var(--tomato-7);
-  --accentBorderHover: var(--tomato-8);
-  --accentSolid: var(--tomato-9);
-  --accentSolidHover: var(--tomato-10);
-  --accentText: var(--tomato-11);
-  --accentTextContrast: var(--tomato-12);
+  --accentBase: var(--blue-1);
+  --accentBgSubtle: var(--blue-2);
+  --accentBg: var(--blue-3);
+  --accentBgHover: var(--blue-4);
+  --accentBgActive: var(--blue-5);
+  --accentLine: var(--blue-6);
+  --accentBorder: var(--blue-7);
+  --accentBorderHover: var(--blue-8);
+  --accentSolid: var(--blue-9);
+  --accentSolidHover: var(--blue-10);
+  --accentText: var(--blue-11);
+  --accentTextContrast: var(--blue-12);
 
-  --baseBase: var(--mauve-1);
-  --baseBgSubtle: var(--mauve-2);
-  --baseBg: var(--mauve-3);
-  --baseBgHover: var(--mauve-4);
-  --baseBgActive: var(--mauve-5);
-  --baseLine: var(--mauve-6);
-  --baseBorder: var(--mauve-7);
-  --baseBorderHover: var(--mauve-8);
-  --baseSolid: var(--mauve-9);
-  --baseSolidHover: var(--mauve-10);
-  --baseText: var(--mauve-11);
-  --baseTextContrast: var(--mauve-12);
+  --baseBase: var(--gray-1);
+  --baseBgSubtle: var(--gray-2);
+  --baseBg: var(--gray-3);
+  --baseBgHover: var(--gray-4);
+  --baseBgActive: var(--gray-5);
+  --baseLine: var(--gray-6);
+  --baseBorder: var(--gray-7);
+  --baseBorderHover: var(--gray-8);
+  --baseSolid: var(--gray-9);
+  --baseSolidHover: var(--gray-10);
+  --baseText: var(--gray-11);
+  --baseTextContrast: var(--gray-12);
 
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
@@ -55,6 +55,7 @@
 
 .mdxeditor {
   width: 100%;
+  text-align: left;
 }
 
 .header {

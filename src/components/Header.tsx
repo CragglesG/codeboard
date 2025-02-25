@@ -54,8 +54,10 @@ export default function Header({
         </a>
       )}
       {children}
-      <nav className="nav">{actionLink ? <ActionLink /> : null}</nav>
-      <ModeToggle className="mode-toggle mr-5 rounded-full" />
+      <nav className="nav">
+        {actionLink ? <ActionLink /> : null}
+        <ModeToggle className="mode-toggle mr-5 rounded-full" />
+      </nav>
     </header>
   );
 }
