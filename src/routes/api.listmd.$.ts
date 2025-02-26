@@ -7,6 +7,7 @@ export async function action({ request }: Route.ActionArgs) {
 
   if (id != null) {
     const files = (await list({ prefix: `mdStorage/${id}/` })).blobs;
+    const fileNames = files.map((file) => file.pathname.split("/")[2]);
     let fileTitles: string[] = [];
     for (let i = 0; i < files.length; i++) {
       let md = await fetch(
@@ -27,7 +28,9 @@ export async function action({ request }: Route.ActionArgs) {
         fileTitles.push("Untitled");
       }
     }
-    return new Response(JSON.stringify({ files: files, titles: fileTitles }));
+    return new Response(
+      JSON.stringify({ files: fileNames, titles: fileTitles })
+    );
   } else {
     return new Response(JSON.stringify([{ id: "error" }]), { status: 400 });
   }

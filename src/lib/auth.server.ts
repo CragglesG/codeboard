@@ -1,6 +1,7 @@
 import { betterAuth } from "better-auth";
 import pkg from "pg";
 // import fs from "node:fs";
+import { sendEmailVerification } from "./sendEmail";
 
 const { Pool } = pkg;
 
@@ -24,6 +25,21 @@ export const auth = betterAuth({
     accountLinking: {
       enabled: true,
       allowDifferentEmails: true,
+    },
+  },
+  user: {
+    changeEmail: {
+      enabled: true,
+      sendChangeEmailVerification: async (
+        { user, newEmail, url, token },
+        request
+      ) => {
+        await sendEmailVerification({
+          name: user.name,
+          email: user.email,
+          link: url,
+        });
+      },
     },
   },
 });
