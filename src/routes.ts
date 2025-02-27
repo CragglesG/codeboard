@@ -14,6 +14,8 @@ export default [
   route("/scribbles", "routes/Scribbles.tsx"),
   route("/signup", "routes/signup.tsx"),
   route("/signin", "routes/signin.tsx"),
+  route("/resetpassword", "routes/resetPassword.tsx"),
+  route("/forgetpassword", "routes/forgetPassword.tsx"),
   index("routes/Home.tsx"),
   route("*", "catchall.tsx"),
 ] satisfies RouteConfig;

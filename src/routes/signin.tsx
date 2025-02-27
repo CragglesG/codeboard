@@ -74,11 +74,15 @@ export default function SignIn() {
           navigate(redirect, { state: misc });
         },
         onError: (ctx) => {
-          console.log(ctx.error);
-          alert(
-            ctx.error.message ||
-              "An error occured. Please try again later, and if the problem persists, please contact support."
-          );
+          if (ctx.error.status == 403) {
+            alert("Please verify your email address before signing in.");
+          } else {
+            console.log(ctx.error);
+            alert(
+              ctx.error.message ||
+                "An unknown error occurred. Please try again later, and if the problem persists, please contact support."
+            );
+          }
         },
       }
     );
@@ -105,6 +109,33 @@ export default function SignIn() {
         },
       }
     );
+  };
+
+  const slackSignIn = async () => {
+    await authClient.signIn.oauth2(
+      {
+        providerId: "slack",
+      },
+      {
+        onRequest: (ctx) => {
+          // show loading state
+        },
+        onSuccess: (ctx) => {
+          navigate(redirect, { state: misc });
+        },
+        onError: (ctx) => {
+          console.log(ctx.error);
+          alert(
+            ctx.error.message ||
+              "An error occured. Please try again later, and if the problem persists, please contact support."
+          );
+        },
+      }
+    );
+  };
+
+  const forgetPassword = async () => {
+    navigate("/forgetpassword", { state: { redirect: redirect, misc: misc } });
   };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -156,7 +187,15 @@ export default function SignIn() {
                 className="grid gap-2"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <div className="flex items-center">
+                      <FormLabel>Password</FormLabel>
+                      <a
+                        onClick={forgetPassword}
+                        className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+                      >
+                        Forgot your password?
+                      </a>
+                    </div>
                     <FormControl>
                       <Input type="password" {...field} />
                     </FormControl>
@@ -188,6 +227,15 @@ export default function SignIn() {
               />
             </svg>
             Login with GitHub
+          </Button>
+          <Button
+            onClick={() => {
+              slackSignIn();
+            }}
+            variant="outline"
+            className="w-full"
+          >
+            Login with Slack
           </Button>
         </CardContent>
         <CardFooter className="mt-4 text-center text-sm">

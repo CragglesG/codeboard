@@ -1,7 +1,12 @@
 import { betterAuth } from "better-auth";
+import { genericOAuth } from "better-auth/plugins";
 import pkg from "pg";
 // import fs from "node:fs";
-import { sendEmailVerification } from "./sendEmail";
+import {
+  sendChangeEmailVerification,
+  sendEmailVerification,
+  sendResetPassword,
+} from "./sendEmail";
 
 const { Pool } = pkg;
 
@@ -14,6 +19,14 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
+    requireEmailVerification: true,
+    sendResetPassword: async ({ user, url, token }, request) => {
+      await sendResetPassword({
+        name: user.name,
+        email: user.email,
+        link: url,
+      });
+    },
   },
   socialProviders: {
     github: {
@@ -34,7 +47,7 @@ export const auth = betterAuth({
         { user, newEmail, url, token },
         request
       ) => {
-        await sendEmailVerification({
+        await sendChangeEmailVerification({
           name: user.name,
           email: user.email,
           link: url,
@@ -42,4 +55,28 @@ export const auth = betterAuth({
       },
     },
   },
+  emailVerification: {
+    sendVerificationEmail: async ({ user, url, token }, request) => {
+      await sendEmailVerification({
+        name: user.name,
+        email: user.email,
+        link: url,
+      });
+    },
+    sendOnSignUp: true,
+  },
+  plugins: [
+    genericOAuth({
+      config: [
+        {
+          providerId: "slack",
+          clientId: process.env.SLACK_CLIENT_ID as string,
+          clientSecret: process.env.SLACK_CLIENT_SECRET as string,
+          authorizationUrl: "https://slack.com/oauth/v2/authorize",
+          tokenUrl: "https://slack.com/api/oauth.v2.access",
+          scopes: ["users:read", "users:read.email"],
+        },
+      ],
+    }),
+  ],
 });

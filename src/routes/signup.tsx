@@ -114,6 +114,29 @@ export default function SignUp() {
     );
   };
 
+  const slackSignUp = async () => {
+    await authClient.signIn.oauth2(
+      {
+        providerId: "slack",
+      },
+      {
+        onRequest: (ctx) => {
+          // show loading state
+        },
+        onSuccess: (ctx) => {
+          navigate(redirect, { state: misc });
+        },
+        onError: (ctx) => {
+          console.log(ctx.error);
+          alert(
+            ctx.error.message ||
+              "An error occurred. Please try again later, and if the problem persists, please contact support."
+          );
+        },
+      }
+    );
+  };
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     setEmail(values.email);
     setPassword(values.password);
@@ -213,6 +236,15 @@ export default function SignUp() {
               />
             </svg>
             Login with GitHub
+          </Button>
+          <Button
+            onClick={() => {
+              slackSignIn();
+            }}
+            variant="outline"
+            className="w-full"
+          >
+            Login with Slack
           </Button>
         </CardContent>
         <CardFooter className="mt-4 text-center text-sm">
