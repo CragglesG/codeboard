@@ -1,5 +1,5 @@
-import React, { useContext, useId } from "react";
-import { type Node } from "@xyflow/react";
+import React, { useContext } from "react";
+import { type Node, Handle, Position } from "@xyflow/react";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import {
@@ -48,7 +48,15 @@ export const defaultNodes = [
 ];
 
 export function BasicNode({ data }: { data: { label: string } }) {
-  return <div className="basic-node">{data.label}</div>;
+  return (
+    <>
+      <Handle type="target" position={Position.Top} id="a" />
+      <Handle type="source" position={Position.Right} id="b" />
+      <Handle type="source" position={Position.Bottom} id="c" />
+      <Handle type="target" position={Position.Left} id="d" />
+      <div className="basic-node">{data.label}</div>
+    </>
+  );
 }
 
 export function FrameworkDropdownNode({

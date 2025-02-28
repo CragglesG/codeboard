@@ -26,13 +26,13 @@ export async function loader({ request }: Route.LoaderArgs) {
     `${process.env.BLOB_PUBLIC_URL}/boards/${user}/${file}`
   );
   if (!data.ok && data.status === 404) {
-    await put(`boards/${user}/${file}`, "{}", {
+    await put(`boards/${user}/${file}`, "[[{}], [{}]]", {
       access: "public",
       contentType: "application/json",
       cacheControlMaxAge: 10,
       addRandomSuffix: false,
     });
-    return new Response("{}");
+    return new Response("[[{}], [{}]]");
   }
   return new Response(await data.text());
 }

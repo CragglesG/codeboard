@@ -24,8 +24,13 @@ export async function action({ request }: Route.ActionArgs) {
         if (boardData === "{}") {
           continue;
         } else {
-          let title = JSON.parse(boardData)[0].data.label;
-          fileTitles.push(title);
+          try {
+            let title = JSON.parse(boardData)[0][0].data.label;
+            fileTitles.push(title);
+          } catch (error) {
+            let title = JSON.parse(boardData)[0].data.label;
+            fileTitles.push(title);
+          }
         }
       } else {
         fileTitles.push("Untitled");

@@ -3,17 +3,25 @@ import { Form, useNavigate, useLocation } from "react-router";
 import { makeid } from "../utils/ScribblesUtils";
 import ProtectedRoute from "../utils/ProtectedRoute";
 import "../assets/css/forms.css";
+import scribblesToBoards from "../utils/ScribblesToBoards";
+
+type scribblesObject = {
+  files: string[];
+  titles: string[];
+};
 
 export function ListScribbles({
   id,
   submit,
+  scribbles,
+  setScribbles,
 }: {
   id: string;
-  submit: (title?: string) => Promise<void>;
+  submit: (title?: string, file?: string) => Promise<void>;
+  scribbles: scribblesObject;
+  setScribbles: React.Dispatch<React.SetStateAction<scribblesObject>>;
 }) {
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
-  const [scribbles, setScribbles] = useState<object>();
 
   const fetchScribbles = async () => {
     if (loading) {
@@ -43,7 +51,7 @@ export function ListScribbles({
           <a
             onClick={async (e) => {
               e.preventDefault();
-              submit(scribbles.titles[i]);
+              submit(scribbles.titles[i], scribbles.files[i]);
             }}
           >
             {scribbles.titles[i]}
@@ -59,40 +67,64 @@ export function ListScribbles({
 export default function NewBoard() {
   const [userId, setUserId] = useState<string>("");
   let navigate = useNavigate();
-  let { state } = useLocation();
   const [title, setTitle] = useState<string>("");
+  const [scribbles, setScribbles] = useState<scribblesObject>();
 
   const file = makeid(20);
 
-  const createBoard = async (titleArg?: string) => {
+  const createBoard = async (titleArg?: string, scribbleFile?: string) => {
+    let aiCompletion: { nodes: object[]; edges: object[] } = {
+      nodes: [{}],
+      edges: [{}],
+    };
+    if (scribbleFile) {
+      const id = scribbleFile;
+      const md = await (
+        await fetch(
+          import.meta.env.VITE_PROJECT_URL +
+            "/api/md?file=" +
+            id +
+            "&user=" +
+            userId,
+          {
+            method: "GET",
+          }
+        )
+      ).text();
+      aiCompletion = await scribblesToBoards({ scribble: md });
+    }
     let formData = new FormData();
     formData.append(
       "board",
       JSON.stringify([
-        {
-          id: "1",
-          position: { x: 0, y: 0 },
-          data: { label: titleArg ? titleArg : title },
-          type: "basic",
-        },
-        {
-          id: "2",
-          position: { x: 50, y: 50 },
-          data: {
-            selectedLanguage: "JavaScript",
-            recommendedLanguage: "JavaScript",
+        [
+          {
+            id: "1",
+            position: { x: 0, y: 0 },
+            data: { label: titleArg ? titleArg : title },
+            type: "basic",
           },
-          type: "languageDropdown",
-        },
-        {
-          id: "3",
-          position: { x: 100, y: 100 },
-          data: {
-            selectedFramework: "React",
-            recommendedFramework: "React",
+          {
+            id: "2",
+            position: { x: 50, y: 50 },
+            data: {
+              selectedLanguage: "JavaScript",
+              recommendedLanguage: "JavaScript",
+            },
+            type: "languageDropdown",
           },
-          type: "frameworkDropdown",
-        },
+          {
+            id: "3",
+            position: { x: 100, y: 100 },
+            data: {
+              selectedFramework: "React",
+              recommendedFramework: "React",
+            },
+            type: "frameworkDropdown",
+          },
+          ...aiCompletion.nodes,
+        ],
+        [...aiCompletion.edges],
       ])
     );
     formData.append("user", userId);
@@ -109,13 +141,12 @@ export default function NewBoard() {
       <div>
         <h2>Create A New Board</h2>
         <h3>Create From Scribble:</h3>
-        {
-          <ListScribbles
-            id={userId || ""}
-            setTitle={setTitle}
-            submit={createBoard}
-          />
-        }
+        <ListScribbles
+          id={userId}
+          submit={createBoard}
+          scribbles={scribbles}
+          setScribbles={setScribbles}
+        />
         <h3>Create From Scratch:</h3>
         <Form
           onSubmit={(e) => {

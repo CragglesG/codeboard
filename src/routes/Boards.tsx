@@ -1,9 +1,15 @@
 import {
   applyNodeChanges,
+  applyEdgeChanges,
   Controls,
   ReactFlow,
+  Connection,
+  OnConnect,
+  addEdge,
   type Node,
+  type Edge,
   type OnNodesChange,
+  type OnEdgesChange,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -30,6 +36,7 @@ import {
 
 export default function Boards() {
   const [nodes, setNodes] = useState<Node[]>(defaultNodes);
+  const [edges, setEdges] = useState<Edge[]>([]);
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>("");
   const [language, setLanguage] = useState<string>("JavaScript");
@@ -82,9 +89,20 @@ export default function Boards() {
     [nodes]
   );
 
-  const onNodesChange: OnNodesChange = useCallback((changes: any) => {
-    setNodes((nds: any) => applyNodeChanges(changes, nds));
-  }, []);
+  const onNodesChange: OnNodesChange = useCallback(
+    (changes: any) => setNodes((nds) => applyNodeChanges(changes, nds)),
+    []
+  );
+
+  const onEdgesChange: OnEdgesChange = useCallback(
+    (changes: any) => setEdges((eds) => applyEdgeChanges(changes, eds)),
+    []
+  );
+
+  const onConnect: OnConnect = useCallback(
+    (connection: Connection) => setEdges((eds) => addEdge(connection, eds)),
+    []
+  );
 
   const nodeTypes = useMemo(
     () => ({
@@ -105,11 +123,11 @@ export default function Boards() {
       if (data.ok) {
         const json = await data.text();
         const parsedJson = JSON.parse(json);
-        if (parsedJson && json != "{}") {
+        if (parsedJson && json != "[[{}], [{}]]") {
           const nodes = [];
           const dims = { width: window.innerWidth, height: window.innerHeight };
-          for (let i = 0; i < parsedJson.length; i++) {
-            const node = parsedJson[i];
+          for (let i = 0; i < parsedJson[0].length; i++) {
+            const node = parsedJson[0][i];
             if (
               node.type === "basic" &&
               node.position.x === 0 &&
@@ -135,6 +153,7 @@ export default function Boards() {
             nodes.push(node);
           }
           setNodes(nodes);
+          setEdges(parsedJson[1]);
         } else {
           const nodes = [];
           const dims = { width: window.innerWidth, height: window.innerHeight };
@@ -153,6 +172,7 @@ export default function Boards() {
             nodes.push(node);
           }
           setNodes(nodes);
+          setEdges([]);
         }
       }
     }
@@ -169,14 +189,14 @@ export default function Boards() {
         const formData = new FormData();
         formData.append("user", userId);
         formData.append("id", state.file);
-        formData.append("board", JSON.stringify(nodes));
+        formData.append("board", JSON.stringify([nodes, edges]));
         await fetch(`${import.meta.env.VITE_PROJECT_URL}/api/boards`, {
           method: "PUT",
           body: formData,
         });
       }
     },
-    [nodes]
+    [nodes, edges]
   );
 
   useEffect(() => {
@@ -219,6 +239,9 @@ export default function Boards() {
                 className="react-flow"
                 nodes={nodes}
                 onNodesChange={onNodesChange}
+                edges={edges}
+                onEdgesChange={onEdgesChange}
+                onConnect={onConnect}
                 nodeTypes={nodeTypes}
                 proOptions={{ hideAttribution: true }}
               >
