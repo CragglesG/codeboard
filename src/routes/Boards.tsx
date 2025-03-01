@@ -6,6 +6,8 @@ import {
   Connection,
   OnConnect,
   addEdge,
+  useNodesState,
+  useEdgesState,
   type Node,
   type Edge,
   type OnNodesChange,
@@ -35,8 +37,8 @@ import {
 } from "../utils/BoardsContexts";
 
 export default function Boards() {
-  const [nodes, setNodes] = useState<Node[]>(defaultNodes);
-  const [edges, setEdges] = useState<Edge[]>([]);
+  const [nodes, setNodes, onNodesChange] = useNodesState(defaultNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>("");
   const [language, setLanguage] = useState<string>("JavaScript");
@@ -87,16 +89,6 @@ export default function Boards() {
       );
     },
     [nodes]
-  );
-
-  const onNodesChange: OnNodesChange = useCallback(
-    (changes: any) => setNodes((nds) => applyNodeChanges(changes, nds)),
-    []
-  );
-
-  const onEdgesChange: OnEdgesChange = useCallback(
-    (changes: any) => setEdges((eds) => applyEdgeChanges(changes, eds)),
-    []
   );
 
   const onConnect: OnConnect = useCallback(

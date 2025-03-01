@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Form, useNavigate, useLocation } from "react-router";
+import { Form, useNavigate, useSubmit } from "react-router";
 import { makeid } from "../utils/ScribblesUtils";
 import ProtectedRoute from "../utils/ProtectedRoute";
 import "../assets/css/forms.css";
-import scribblesToBoards from "../utils/ScribblesToBoards";
 
 type scribblesObject = {
   files: string[];
@@ -67,8 +66,10 @@ export function ListScribbles({
 export default function NewBoard() {
   const [userId, setUserId] = useState<string>("");
   let navigate = useNavigate();
+  const submit = useSubmit();
   const [title, setTitle] = useState<string>("");
   const [scribbles, setScribbles] = useState<scribblesObject>();
+  const [loadingCompletion, setLoadingCompletion] = useState(false);
 
   const file = makeid(20);
 
@@ -91,7 +92,17 @@ export default function NewBoard() {
           }
         )
       ).text();
-      aiCompletion = await scribblesToBoards({ scribble: md });
+      const body = new FormData();
+      body.append("md", md);
+      setLoadingCompletion(true);
+      aiCompletion = JSON.parse(
+        await (
+          await fetch(import.meta.env.VITE_PROJECT_URL + "/api/stb", {
+            method: "POST",
+            body: body,
+          })
+        ).text()
+      );
     }
     let formData = new FormData();
     formData.append(
@@ -136,37 +147,41 @@ export default function NewBoard() {
     navigate("/boards", { state: { file: file, user: userId } });
   };
 
-  return (
-    <ProtectedRoute redirect="/signin" setUserId={setUserId}>
-      <div>
-        <h2>Create A New Board</h2>
-        <h3>Create From Scribble:</h3>
-        <ListScribbles
-          id={userId}
-          submit={createBoard}
-          scribbles={scribbles}
-          setScribbles={setScribbles}
-        />
-        <h3>Create From Scratch:</h3>
-        <Form
-          onSubmit={(e) => {
-            e.preventDefault();
-            createBoard();
-          }}
-        >
-          <input
-            type="text"
-            name="title"
-            placeholder="Title"
-            className="top-input"
-            onChange={(e) => {
-              setTitle(e.target.value);
-            }}
+  if (!loadingCompletion) {
+    return (
+      <ProtectedRoute redirect="/signin" setUserId={setUserId}>
+        <div>
+          <h2>Create A New Board</h2>
+          <h3>Create From Scribble:</h3>
+          <ListScribbles
+            id={userId}
+            submit={createBoard}
+            scribbles={scribbles}
+            setScribbles={setScribbles}
           />
-          <br />
-          <button type="submit">Create</button>
-        </Form>
-      </div>
-    </ProtectedRoute>
-  );
+          <h3>Create From Scratch:</h3>
+          <Form
+            onSubmit={(e) => {
+              e.preventDefault();
+              createBoard();
+            }}
+          >
+            <input
+              type="text"
+              name="title"
+              placeholder="Title"
+              className="top-input"
+              onChange={(e) => {
+                setTitle(e.target.value);
+              }}
+            />
+            <br />
+            <button type="submit">Create</button>
+          </Form>
+        </div>
+      </ProtectedRoute>
+    );
+  } else {
+    return <h2>Loading...</h2>;
+  }
 }

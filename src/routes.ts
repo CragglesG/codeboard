@@ -11,7 +11,7 @@ export default [
   route("/api/listmd/*", "routes/api.listmd.$.ts"),
   route("/api/boards/*", "routes/api.boards.$.ts"),
   route("/api/listboards/*", "routes/api.listboards.$.ts"),
-  route("/api/ai/*", "routes/api.ai.$.ts"),
+  route("/api/stb/*", "routes/api.stb.$.tsx"),
   route("/scribbles", "routes/Scribbles.tsx"),
   route("/signup", "routes/signup.tsx"),
   route("/signin", "routes/signin.tsx"),
