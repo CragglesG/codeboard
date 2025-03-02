@@ -66,7 +66,6 @@ export function ListScribbles({
 export default function NewBoard() {
   const [userId, setUserId] = useState<string>("");
   let navigate = useNavigate();
-  const submit = useSubmit();
   const [title, setTitle] = useState<string>("");
   const [scribbles, setScribbles] = useState<scribblesObject>();
   const [loadingCompletion, setLoadingCompletion] = useState(false);

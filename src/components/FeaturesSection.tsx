@@ -14,7 +14,6 @@ function FeaturesSection() {
         </div>
         <div className="feature-card">
           <h3>Boards</h3>
-          <h4>Coming Soon</h4>
           <p>
             Refine and develop your ideas with the help of specially-designed AI
             and NLP.

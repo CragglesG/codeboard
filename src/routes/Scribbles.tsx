@@ -64,14 +64,18 @@ export default function Scribbles() {
         const { data } = await authClient.getSession();
         if (data != null) {
           setAuthenticated(true);
-          ({ file } = state);
-          user = data.user.id;
-          navigate(".", { state: { file: file, user: user } });
-          setMarkdown();
-          document.addEventListener("beforeunload", saveCallback);
-          document.addEventListener("pagehide", saveCallback);
-          document.addEventListener("visibilitychange", saveCallback);
-          setLoading(false);
+          if (state) {
+            ({ file } = state);
+            user = data.user.id;
+            navigate(".", { state: { file: file, user: user } });
+            setMarkdown();
+            document.addEventListener("beforeunload", saveCallback);
+            document.addEventListener("pagehide", saveCallback);
+            document.addEventListener("visibilitychange", saveCallback);
+            setLoading(false);
+          } else {
+            navigate("/dashboard", { state: { misc: state } });
+          }
         } else {
           setAuthenticated(false);
           navigate("/signin", {

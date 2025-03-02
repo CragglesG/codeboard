@@ -7,6 +7,7 @@ import {
   ChangeLanguage,
   ChangeFramework,
 } from "./BoardsContexts";
+import { Button } from "@/components/ui/button";
 
 const languages = ["JavaScript", "TypeScript", "Python", "Rust", "C++"];
 
@@ -149,19 +150,15 @@ export function LanguageDropdownNode({
 }
 
 export function HeaderControls({
-  nodes,
-  setNodes,
   setShowPopup,
 }: {
-  nodes: Node[];
-  setNodes: React.Dispatch<React.SetStateAction<Node[]>>;
   setShowPopup: React.Dispatch<boolean>;
 }) {
   return (
     <div className="header-controls">
-      <button className="header-button" onClick={() => setShowPopup(true)}>
+      <Button className="header-button" onClick={() => setShowPopup(true)}>
         Add Text Node
-      </button>
+      </Button>
     </div>
   );
 }

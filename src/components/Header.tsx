@@ -7,12 +7,13 @@ import ModeToggle from "./ModeToggle";
 
 function ActionLink() {
   const [authenticated, setAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const data = await authClient.getSession();
-        if (data != null) {
+        const { data } = await authClient.getSession();
+        if (data) {
           setAuthenticated(true);
         } else {
           setAuthenticated(false);
@@ -20,11 +21,17 @@ function ActionLink() {
       } catch (error) {
         console.error("Error checking session:", error);
         setAuthenticated(false);
+      } finally {
+        setLoading(false);
       }
     };
 
     checkSession();
-  });
+  }, []);
+
+  if (loading) {
+    return null;
+  }
 
   if (authenticated) {
     return <a href="/dashboard">Dashboard</a>;

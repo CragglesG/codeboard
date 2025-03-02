@@ -1,17 +1,12 @@
 import {
-  applyNodeChanges,
-  applyEdgeChanges,
   Controls,
+  MiniMap,
   ReactFlow,
   Connection,
   OnConnect,
   addEdge,
   useNodesState,
   useEdgesState,
-  type Node,
-  type Edge,
-  type OnNodesChange,
-  type OnEdgesChange,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -35,6 +30,7 @@ import {
   ChangeLanguage,
   ChangeFramework,
 } from "../utils/BoardsContexts";
+import { useTheme } from "../components/ThemeProvider";
 
 export default function Boards() {
   const [nodes, setNodes, onNodesChange] = useNodesState(defaultNodes);
@@ -43,6 +39,7 @@ export default function Boards() {
   const [userId, setUserId] = useState<string>("");
   const [language, setLanguage] = useState<string>("JavaScript");
   const { state } = useLocation();
+  const theme = useTheme();
 
   const changeLanguage = useCallback(
     (newLanguage: string) => {
@@ -236,8 +233,10 @@ export default function Boards() {
                 onConnect={onConnect}
                 nodeTypes={nodeTypes}
                 proOptions={{ hideAttribution: true }}
+                colorMode={theme.theme}
               >
                 <Controls />
+                <MiniMap />
               </ReactFlow>
             </div>
           </ChangeFramework.Provider>
