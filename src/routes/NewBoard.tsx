@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Form, useNavigate, useSubmit } from "react-router";
+import { Form, useNavigate } from "react-router";
 import { makeid } from "../utils/ScribblesUtils";
 import ProtectedRoute from "../utils/ProtectedRoute";
 import "../assets/css/forms.css";
+import Loading from "../components/Loading";
 
 type scribblesObject = {
   files: string[];
@@ -181,6 +182,6 @@ export default function NewBoard() {
       </ProtectedRoute>
     );
   } else {
-    return <h2>Loading...</h2>;
+    return <Loading />;
   }
 }

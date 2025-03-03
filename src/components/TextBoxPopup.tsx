@@ -21,20 +21,18 @@ export default function TextBoxPopup({
         {optionalMessage && <CardTitle>{optionalMessage}</CardTitle>}
       </CardHeader>
       <CardContent>
-        <Form className="flex flex-col gap-6">
+        <Form
+          className="flex flex-col gap-6"
+          onSubmit={() => {
+            btnOnClick(...btnOnClickArgs, text);
+          }}
+        >
           <Input
             type="text"
             placeholder="Enter text"
             onChange={(e) => setText(e.target.value)}
           />
-          <Button
-            type="submit"
-            onClick={() => {
-              btnOnClick(...btnOnClickArgs, text);
-            }}
-          >
-            Submit
-          </Button>
+          <Button type="submit">Submit</Button>
         </Form>
       </CardContent>
     </Card>
